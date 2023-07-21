@@ -14,11 +14,6 @@ public partial class MainPage : ContentPage
 
 		InitializeComponent();
 
-        //SceneView.StartInteraction += SceneView_StartInteraction;
-        //SceneView.DragInteraction += SceneView_DragInteraction;
-
-		BindingContext = this;
-
 		Task.Run( async () =>
 		{
 			while ( true )

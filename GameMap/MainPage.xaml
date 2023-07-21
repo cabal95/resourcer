@@ -4,7 +4,6 @@
              xmlns:sk="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
              x:Class="GameMap.MainPage">
 
-    <!--<GraphicsView x:Name="SceneView" Drawable="{Binding Scene}" />-->
     <sk:SKCanvasView x:Name="SceneView" PaintSurface="SKCanvasView_PaintSurface" EnableTouchEvents="True" Touch="SceneView_Touch" />
 
 </ContentPage>
