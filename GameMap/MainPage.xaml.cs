@@ -29,25 +29,6 @@ public partial class MainPage : ContentPage
 		} );
 	}
 
-    private void SceneView_StartInteraction( object sender, TouchEventArgs e )
-    {
-		_lastInteractionPostion = new PointF( e.Touches[0].X, e.Touches[0].Y );
-    }
-
-    private void SceneView_DragInteraction( object sender, TouchEventArgs e )
-    {
-		var changeX = e.Touches[0].X - _lastInteractionPostion.Value.X;
-		var changeY = e.Touches[0].Y - _lastInteractionPostion.Value.Y;
-
-		_lastInteractionPostion = new PointF( e.Touches[0].X, e.Touches[0].Y );
-
-		Dispatcher.DispatchAsync( () =>
-		{
-			Scene.Offset = new PointF( Scene.Offset.X + changeX, Scene.Offset.Y + changeY );
-			SceneView.InvalidateSurface();
-		} );
-    }
-
     private void SKCanvasView_PaintSurface( object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e )
     {
 		e.Surface.Canvas.Save();
@@ -78,7 +59,7 @@ public partial class MainPage : ContentPage
 
 			Dispatcher.DispatchAsync( () =>
 			{
-				Scene.Offset = new PointF( Scene.Offset.X + changeX, Scene.Offset.Y + changeY );
+				Scene.Offset = new PointF( Scene.Offset.X - changeX, Scene.Offset.Y - changeY );
 				SceneView.InvalidateSurface();
 			} );
 		}
