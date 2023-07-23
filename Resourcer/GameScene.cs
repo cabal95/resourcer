@@ -1,4 +1,6 @@
-﻿using SkiaSharp;
+﻿using Resourcer.Server.Generators;
+
+using SkiaSharp;
 
 namespace GameMap
 {
@@ -86,13 +88,26 @@ namespace GameMap
             }
             _forestTiles.SetImmutable();
 
-            var generator = new MapGenerator.BiomeGenerator
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton<INoiseGenerator2D>( new PerlinNoise( 1234u ) );
+            serviceCollection.AddSingleton<IParameterGenerator2D, ParameterGenerator2D>();
+            serviceCollection.AddSingleton<IMapParameterGenerator2D, MapParameterGenerator2D>();
+            serviceCollection.AddSingleton<IMapCellProvider<byte>, TerrainCellProvider>();
+            serviceCollection.AddSingleton( typeof( IMapGenerator2D<> ), typeof( MapGenerator2D<> ) );
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            using ( var scope = serviceProvider.CreateScope() )
             {
-                Width = 256,
-                Height = 256
-            };
-            _map = generator.GenerateMap( 1234 );
-            
+                var mg = scope.ServiceProvider.GetRequiredService<IMapGenerator2D<byte>>();
+
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+                _map = mg.CreateMap( 0, 0, 256, 256 );
+                sw.Stop();
+
+                sw = System.Diagnostics.Stopwatch.StartNew();
+                _map = mg.CreateMap( 0, 0, 256, 256 );
+                sw.Stop();
+            }
+
         }
 
         private static SKRect GetTileRect( int x, int y )

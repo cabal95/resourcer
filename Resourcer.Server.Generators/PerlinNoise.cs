@@ -1,11 +1,21 @@
 ﻿using System.Numerics;
 
-namespace MapGenerator;
+namespace Resourcer.Server.Generators;
 
-internal class PerlinNoise
+/// <summary>
+/// A 2D noise generator implementation based on the Perlin noise pattern.
+/// </summary>
+public class PerlinNoise : INoiseGenerator2D
 {
+    /// <summary>
+    /// The seed value this generator was initialized with.
+    /// </summary>
     private readonly uint _seed;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="PerlinNoise"/>.
+    /// </summary>
+    /// <param name="seed">The seed value to use for random data. Multiple instances using the same seed will produce the same values for the specified positions.</param>
     public PerlinNoise( uint seed )
     {
         _seed = seed;
@@ -69,6 +79,7 @@ internal class PerlinNoise
         return value;
     }
 
+    /// <inheritdoc/>
     public float Noise( float x, float y )
     {
         // Determine grid cell coordinates
@@ -96,6 +107,20 @@ internal class PerlinNoise
         value = Interpolate( ix0, ix1, sy );
         value = ( value * 0.5f ) + 0.5f;
 
-        return value;
+        return Normalize( value );
+    }
+
+    /// <summary>
+    /// Normalize the value. Normally these values land between 0.25 and 0.75
+    /// so we stretch them out to be between 0 and 1.
+    /// </summary>
+    /// <param name="value">The value to be normalized.</param>
+    /// <returns>The normalized value.</returns>
+    private static float Normalize( float value )
+    {
+        float minValue = 0.25f;
+        float maxValue = 0.75f;
+
+        return Math.Clamp( ( value - minValue ) / ( maxValue - minValue ), 0f, 1f );
     }
 }
