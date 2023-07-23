@@ -1,4 +1,4 @@
-﻿namespace GameMap;
+﻿namespace Resourcer;
 
 public partial class AppShell : Shell
 {

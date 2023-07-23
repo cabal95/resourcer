@@ -1,7 +1,6 @@
-﻿using ObjCRuntime;
-using UIKit;
+﻿using UIKit;
 
-namespace GameMap;
+namespace Resourcer;
 
 public class Program
 {

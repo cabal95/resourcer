@@ -6,16 +6,16 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
-		<RootNamespace>GameMap</RootNamespace>
+		<RootNamespace>Resourcer</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>GameMap</ApplicationTitle>
+		<ApplicationTitle>Resourcer</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.gamemap</ApplicationId>
+		<ApplicationId>com.blueboxmoon.resourcer</ApplicationId>
 		<ApplicationIdGuid>da074e1e-3d88-4efc-8f14-7eece2af4f0d</ApplicationIdGuid>
 
 		<!-- Versions -->

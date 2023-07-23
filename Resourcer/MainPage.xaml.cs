@@ -1,6 +1,6 @@
 ﻿using SkiaSharp;
 
-namespace GameMap;
+namespace Resourcer;
 
 public partial class MainPage : ContentPage
 {

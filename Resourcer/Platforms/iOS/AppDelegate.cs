@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace GameMap;
+namespace Resourcer;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace GameMap;
+namespace Resourcer;
 
 [Application]
 public class MainApplication : MauiApplication

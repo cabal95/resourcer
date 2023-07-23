@@ -5,7 +5,7 @@ using Resourcer.Server.Generators;
 
 using SkiaSharp;
 
-namespace GameMap
+namespace Resourcer
 {
     public interface IScene
     {
@@ -28,7 +28,7 @@ namespace GameMap
 
         public GameScene()
         {
-            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "GameMap.Resources.Embedded.overworld.png" ) )
+            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.Resources.Embedded.overworld.png" ) )
             {
                 _tileset = SKBitmap.Decode( stream );
                 var x = _tileset.IsImmutable;

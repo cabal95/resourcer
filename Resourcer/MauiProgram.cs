@@ -2,7 +2,7 @@
 
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
-namespace GameMap;
+namespace Resourcer;
 
 public static class MauiProgram
 {
