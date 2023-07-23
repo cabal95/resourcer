@@ -3,19 +3,30 @@ using OpenGameKit.Generators.Abstractions;
 
 namespace Resourcer.Server.Generators;
 
+/// <summary>
+/// The cell provider for our standard map terrain.
+/// </summary>
 public class TerrainCellProvider : IMapCellProvider<byte>
 {
-    private static readonly BiomePreset[] _biomes = new BiomePreset[]
+    #region Constants
+
+    /// <summary>
+    /// The biomes that will be used during construction of the map.
+    /// </summary>
+    private static readonly BiomeDefinition[] Biomes = new BiomeDefinition[]
     {
-        new BiomePreset { Id = 'W', MinHeight = 0.0f, MinMoisture = 0.0f, MinHeat = 0.0f }, // Water/Ocean
-        new BiomePreset { Id = 'G', MinHeight = 0.2f, MinMoisture = 0.3f, MinHeat = 0.2f }, // Grassland
-        new BiomePreset { Id = 'F', MinHeight = 0.35f, MinMoisture = 0.6f, MinHeat = 0.5f }, // Forest
-        new BiomePreset { Id = 'D', MinHeight = 0.2f, MinMoisture = 0.0f, MinHeat = 0.75f }, // Desert
-        new BiomePreset { Id = 'M', MinHeight = 0.65f, MinMoisture = 0.3f, MinHeat = 0.0f }, // Mountains
-        new BiomePreset { Id = 'T', MinHeight = 0.5f, MinMoisture = 0.2f, MinHeat = 0.0f } // Tundra
+        new BiomeDefinition( 'W', 0.0f, 0.0f, 0.0f, 0.5f ), // Water/Ocean
+        new BiomeDefinition( 'G', 0.2f, 0.3f, 0.2f ), // Grassland
+        new BiomeDefinition( 'F', 0.35f, 0.6f, 0.5f ), // Forest
+        new BiomeDefinition( 'D', 0.2f, 0.0f, 0.75f, 1.0f, 0.5f, 1.0f ), // Desert
+        new BiomeDefinition( 'M', 0.65f, 0.3f, 0.0f ), // Mountains
+        new BiomeDefinition( 'T', 0.5f, 0.4f, 0.0f, 1.0f, 1.0f, 0.25f ) // Tundra
     };
 
-    private static readonly IParameterDescription[] _parameters = new [] 
+    /// <summary>
+    /// The parameters that will be used to describe each cell of the map.
+    /// </summary>
+    private static readonly IParameterDescription[] Parameters = new [] 
     {
         new ParameterDescription( "height", new []
         {
@@ -34,6 +45,8 @@ public class TerrainCellProvider : IMapCellProvider<byte>
         } )
     };
 
+    #endregion
+
     /// <inheritdoc/>
     public byte CreateCell( IReadOnlyDictionary<string, float> parameters )
     {
@@ -41,16 +54,17 @@ public class TerrainCellProvider : IMapCellProvider<byte>
         var moisture = parameters["moisture"];
         var heat = parameters["heat"];
 
-        var bestBiome = _biomes
+        var bestBiome = Biomes
             .Where( b => b.Matches( height, moisture, heat ) )
             .OrderBy( b => b.GetDiffValue( height, moisture, heat ) )
             .FirstOrDefault();
 
-        return ( byte ) ( bestBiome?.Id ?? _biomes[0].Id );
+        return ( byte ) ( bestBiome?.Id ?? Biomes[0].Id );
     }
 
+    /// <inheritdoc/>
     public IReadOnlyList<IParameterDescription> GetParameters()
     {
-        return _parameters;
+        return Parameters;
     }
 }
