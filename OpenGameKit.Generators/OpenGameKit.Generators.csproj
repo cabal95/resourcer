@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\OpenGameKit.Generators\OpenGameKit.Generators.csproj" />
-  </ItemGroup>
-
 </Project>

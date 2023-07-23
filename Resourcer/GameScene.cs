@@ -1,4 +1,7 @@
-﻿using Resourcer.Server.Generators;
+﻿using OpenGameKit.Generators;
+using OpenGameKit.Generators.Abstractions;
+
+using Resourcer.Server.Generators;
 
 using SkiaSharp;
 
@@ -95,19 +98,17 @@ namespace GameMap
             serviceCollection.AddSingleton<IMapCellProvider<byte>, TerrainCellProvider>();
             serviceCollection.AddSingleton( typeof( IMapGenerator2D<> ), typeof( MapGenerator2D<> ) );
             var serviceProvider = serviceCollection.BuildServiceProvider();
-            using ( var scope = serviceProvider.CreateScope() )
-            {
-                var mg = scope.ServiceProvider.GetRequiredService<IMapGenerator2D<byte>>();
+            
+            using var scope = serviceProvider.CreateScope();
+            var mg = scope.ServiceProvider.GetRequiredService<IMapGenerator2D<byte>>();
 
-                var sw = System.Diagnostics.Stopwatch.StartNew();
-                _map = mg.CreateMap( 0, 0, 256, 256 );
-                sw.Stop();
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            _map = mg.CreateMap( 0, 0, 256, 256 );
+            sw.Stop();
 
-                sw = System.Diagnostics.Stopwatch.StartNew();
-                _map = mg.CreateMap( 0, 0, 256, 256 );
-                sw.Stop();
-            }
-
+            sw = System.Diagnostics.Stopwatch.StartNew();
+            _map = mg.CreateMap( 0, 0, 256, 256 );
+            sw.Stop();
         }
 
         private static SKRect GetTileRect( int x, int y )

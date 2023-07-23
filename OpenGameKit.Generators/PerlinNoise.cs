@@ -1,6 +1,8 @@
-﻿using System.Numerics;
+﻿using OpenGameKit.Generators.Abstractions;
 
-namespace Resourcer.Server.Generators;
+using System.Numerics;
+
+namespace OpenGameKit.Generators;
 
 /// <summary>
 /// A 2D noise generator implementation based on the Perlin noise pattern.

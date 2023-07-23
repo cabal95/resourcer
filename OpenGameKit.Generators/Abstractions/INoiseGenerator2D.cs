@@ -1,4 +1,4 @@
-﻿namespace Resourcer.Server.Generators;
+﻿namespace OpenGameKit.Generators.Abstractions;
 
 /// <summary>
 /// Defines a two dimensional noise generator.
