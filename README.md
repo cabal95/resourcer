@@ -7,3 +7,9 @@ It started as me wanting to learn concepts of procedural terrain generation. Aft
 # Resources
 
 https://opengameart.org/ is a great place to find simple 2D graphics. Most of what you find require attribution, but some don't.
+
+
+* https://opengameart.org/content/zelda-like-tilesets-and-sprites
+* https://opengameart.org/content/48-animated-old-school-rpg-characters-16x16
+* https://opengameart.org/content/tiny-characters-set
+* 

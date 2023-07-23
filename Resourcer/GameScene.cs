@@ -7,6 +7,152 @@ using SkiaSharp;
 
 namespace Resourcer
 {
+    public interface ITile
+    {
+        void Draw( SKCanvas canvas, SKRect destination );
+    }
+
+    public class TileSetTile : ITile
+    {
+        private readonly TileSet _tileSet;
+
+        private readonly int _x;
+
+        private readonly int _y;
+
+        public TileSetTile( TileSet tileSet, int x, int y )
+        {
+            _tileSet = tileSet;
+            _x = x;
+            _y = y;
+        }
+
+        public void Draw( SKCanvas canvas, SKRect destination )
+        {
+            _tileSet.DrawTile( _x, _y, canvas, destination );
+        }
+    }
+
+    public class TileSet
+    {
+        /// <summary>
+        /// The source bitmap data.
+        /// </summary>
+        private readonly SKBitmap _source;
+
+        /// <summary>
+        /// The width and height of each tile.
+        /// </summary>
+        private readonly int _tileSize;
+
+        private readonly int _offsetY;
+
+        /// <summary>
+        /// The number of tiles in the X axis.
+        /// </summary>
+        private readonly int _tileWidthCount;
+
+        /// <summary>
+        /// The number of tiles in the Y axis.
+        /// </summary>
+        private readonly int _tileHeightCount;
+
+        public TileSet( Stream stream, int tileSize, int offsetY = 0 )
+        {
+            _source = SKBitmap.Decode( stream );
+            _source.SetImmutable();
+
+            _tileSize = tileSize;
+            _offsetY = offsetY;
+            _tileWidthCount = _source.Width / tileSize;
+            _tileHeightCount = _source.Height / tileSize;
+        }
+
+        public ITile TileAt( int x, int y )
+        {
+            return new TileSetTile( this, x, y );
+        }
+
+        public void DrawTile( int x, int y, SKCanvas canvas, SKRect destination )
+        {
+            if ( x < 0 || y < 0 || x >= _tileWidthCount || y >= _tileHeightCount )
+            {
+                return;
+            }
+
+            var src = new SKRect( x * _tileSize, (y * _tileSize) + (_offsetY * y), ( x + 1 ) * _tileSize, ( y + 1 ) * _tileSize );
+
+            canvas.DrawBitmap( _source, src, destination );
+        }
+    }
+
+    public class TileSeries
+    {
+        private readonly ITile[] _sourceTiles;
+
+        public int Count => _sourceTiles.Length;
+
+        public TileSeries( params ITile[] sourceTiles )
+        {
+            _sourceTiles = sourceTiles;
+        }
+
+        public void DrawTile( int index, SKCanvas canvas, SKRect destination )
+        {
+            if ( index < 0 || index >= _sourceTiles.Length )
+            {
+                return;
+            }
+
+            _sourceTiles[index].Draw( canvas, destination );
+        }
+    }
+
+    public class AdditiveTile : ITile
+    {
+        private readonly ITile[] _sourceTiles;
+
+        public int Count => _sourceTiles.Length;
+
+        public AdditiveTile( params ITile[] sourceTiles )
+        {
+            _sourceTiles = sourceTiles;
+        }
+
+        public void Draw( SKCanvas canvas, SKRect destination )
+        {
+            for ( int i = 0; i < _sourceTiles.Length; i++ )
+            {
+                _sourceTiles[i].Draw( canvas, destination );
+            }
+        }
+    }
+
+    public class AnimatedTile : ITile
+    {
+        private int _index;
+
+        private readonly ITile[] _sourceTiles;
+
+        public int Count => _sourceTiles.Length;
+
+        public AnimatedTile( params ITile[] sourceTiles )
+        {
+            _sourceTiles = sourceTiles;
+        }
+
+        public void Draw( SKCanvas canvas, SKRect destination )
+        {
+            if ( _index >= _sourceTiles.Length )
+            {
+                _index = 0;
+            }
+
+            _sourceTiles[_index++].Draw( canvas, destination );
+        }
+    }
+
+
     public interface IScene
     {
         void Draw( SKCanvas canvas, RectF dirtyRect );
@@ -16,13 +162,14 @@ namespace Resourcer
     {
         public PointF Offset { get; set; } = Point.Zero;
 
-        private readonly SKBitmap _tileset;
-        private readonly SKBitmap _grassTiles;
-        private readonly SKBitmap _waterTiles;
-        private readonly SKBitmap _tundraTiles;
-        private readonly SKBitmap _mountainTiles;
-        private readonly SKBitmap _desertTiles;
-        private readonly SKBitmap _forestTiles;
+        private readonly TileSet _overworld;
+        private readonly TileSeries _grassTiles;
+        private readonly TileSeries _waterTiles;
+        private readonly TileSeries _tundraTiles;
+        private readonly TileSeries _mountainTiles;
+        private readonly TileSeries _desertTiles;
+        private readonly TileSeries _forestTiles;
+        private readonly ITile _characterTile;
 
         private readonly byte[,] _map;
 
@@ -30,66 +177,47 @@ namespace Resourcer
         {
             using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.Resources.Embedded.overworld.png" ) )
             {
-                _tileset = SKBitmap.Decode( stream );
-                var x = _tileset.IsImmutable;
-                _tileset.SetImmutable();
+                _overworld = new TileSet( stream, 16 );
             }
 
-            _grassTiles = new SKBitmap( 16 * 5, 16, true );
-            using ( var c = new SKCanvas( _grassTiles ) )
-            {
-                c.DrawBitmap( _tileset, GetTileRect( 0, 0 ), GetTileRect( 0, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 7, 9 ), GetTileRect( 1, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 8, 9 ), GetTileRect( 2, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 7, 10 ), GetTileRect( 3, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 8, 10 ), GetTileRect( 4, 0 ) );
-            }
-            _grassTiles.SetImmutable();
+            _grassTiles = new TileSeries(
+                _overworld.TileAt( 0, 0 ),
+                _overworld.TileAt( 7, 9 ),
+                _overworld.TileAt( 8, 9 ),
+                _overworld.TileAt( 7, 10 ),
+                _overworld.TileAt( 8, 10 ) );
 
-            _waterTiles = new SKBitmap( 16 * 8, 16, true );
-            using ( var c = new SKCanvas( _waterTiles ) )
-            {
-                c.DrawBitmap( _tileset, GetTileRect( 0, 1 ), GetTileRect( 0, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 1, 1 ), GetTileRect( 1, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 2, 1 ), GetTileRect( 2, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 3, 1 ), GetTileRect( 3, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 0, 2 ), GetTileRect( 4, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 1, 2 ), GetTileRect( 5, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 2, 2 ), GetTileRect( 6, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 3, 2 ), GetTileRect( 7, 0 ) );
-            }
-            _waterTiles.SetImmutable();
+            _waterTiles = new TileSeries(
+                _overworld.TileAt( 0, 1 ),
+                _overworld.TileAt( 1, 1 ),
+                _overworld.TileAt( 2, 1 ),
+                _overworld.TileAt( 3, 1 ),
+                _overworld.TileAt( 0, 2 ),
+                _overworld.TileAt( 1, 2 ),
+                _overworld.TileAt( 2, 2 ),
+                _overworld.TileAt( 3, 2 ) );
 
-            _tundraTiles = new SKBitmap( 16 * 2, 16, true );
-            using ( var c = new SKCanvas( _tundraTiles ) )
-            {
-                c.DrawBitmap( _tileset, GetTileRect( 14, 11 ), GetTileRect( 0, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 14, 12 ), GetTileRect( 1, 0 ) );
-            }
-            _tundraTiles.SetImmutable();
+            _tundraTiles = new TileSeries(
+                _overworld.TileAt( 14, 11 ),
+                _overworld.TileAt( 14, 12 ) );
 
-            _mountainTiles = new SKBitmap( 16 * 1, 16, true );
-            using ( var c = new SKCanvas( _mountainTiles ) )
-            {
-                c.DrawBitmap( _tileset, GetTileRect( 0, 0 ), GetTileRect( 0, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 7, 5 ), GetTileRect( 0, 0 ) );
-            }
-            _mountainTiles.SetImmutable();
+            _mountainTiles = new TileSeries(
+                new AdditiveTile( _overworld.TileAt( 0, 0 ), _overworld.TileAt( 7, 5 ) ) );
 
-            _desertTiles = new SKBitmap( 16 * 1, 16, true );
-            using ( var c = new SKCanvas( _desertTiles ) )
-            {
-                c.DrawBitmap( _tileset, GetTileRect( 2, 32 ), GetTileRect( 0, 0 ) );
-            }
-            _desertTiles.SetImmutable();
+            _desertTiles = new TileSeries( _overworld.TileAt( 2, 32 ) );
 
-            _forestTiles = new SKBitmap( 16 * 1, 16, true );
-            using ( var c = new SKCanvas( _forestTiles ) )
+            _forestTiles = new TileSeries(
+                new AdditiveTile( _overworld.TileAt( 0, 0 ), _overworld.TileAt( 2, 14 ) ) );
+
+            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.Resources.Embedded.m_01.png" ) )
             {
-                c.DrawBitmap( _tileset, GetTileRect( 0, 0 ), GetTileRect( 0, 0 ) );
-                c.DrawBitmap( _tileset, GetTileRect( 2, 14 ), GetTileRect( 0, 0 ) );
+                var character = new TileSet( stream, 16, 1 );
+
+                _characterTile = new AnimatedTile(
+                    character.TileAt( 0, 0 ),
+                    character.TileAt( 0, 1 ),
+                    character.TileAt( 0, 2 ) );
             }
-            _forestTiles.SetImmutable();
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton<INoiseGenerator2D>( new PerlinNoise( 1234u ) );
@@ -110,12 +238,6 @@ namespace Resourcer
             _map = mg.CreateMap( 0, 0, 256, 256 );
             sw.Stop();
         }
-
-        private static SKRect GetTileRect( int x, int y )
-        {
-            return new SKRect( x * 16, y * 16, ( x + 1 ) * 16, ( y + 1 ) * 16 );
-        }
-
 
         public void Draw( SKCanvas canvas, RectF dirtyRect )
         {
@@ -156,34 +278,42 @@ namespace Resourcer
                 {
                     if ( mapX >= 0 && mapX < 256 && mapY >= 0 && mapY < 256 )
                     {
+                        var destination = new SKRect( x, y, x + 64, y + 64 );
+
                         var biome = _map[mapX, mapY];
                         if ( biome == 'G' )
                         {
-                            canvas.DrawBitmap( _grassTiles, GetTileRect( 0, 0 ), new SKRect( x, y, x + 64, y + 64 ) );
+                            var tileX = Math.Abs( mapX ) % _grassTiles.Count;
+                            _grassTiles.DrawTile( tileX, canvas, destination );
                         }
                         else if ( biome == 'W' )
                         {
-                            canvas.DrawBitmap( _waterTiles, GetTileRect( 0, 0 ), new SKRect( x, y, x + 64, y + 64 ) );
+                            _waterTiles.DrawTile( 0, canvas, destination );
                         }
                         else if ( biome == 'T' )
                         {
-                            canvas.DrawBitmap( _tundraTiles, GetTileRect( 0, 0 ), new SKRect( x, y, x + 64, y + 64 ) );
+                            _tundraTiles.DrawTile( 0, canvas, destination );
                         }
                         else if ( biome == 'M' )
                         {
-                            canvas.DrawBitmap( _mountainTiles, GetTileRect( 0, 0 ), new SKRect( x, y, x + 64, y + 64 ) );
+                            _mountainTiles.DrawTile( 0, canvas, destination );
                         }
                         else if ( biome == 'D' )
                         {
-                            canvas.DrawBitmap( _desertTiles, GetTileRect( 0, 0 ), new SKRect( x, y, x + 64, y + 64 ) );
+                            _desertTiles.DrawTile( 0, canvas, destination );
                         }
                         else if ( biome == 'F' )
                         {
-                            canvas.DrawBitmap( _forestTiles, GetTileRect( 0, 0 ), new SKRect( x, y, x + 64, y + 64 ) );
+                            _forestTiles.DrawTile( 0, canvas, destination );
                         }
                         else
                         {
 
+                        }
+
+                        if ( mapX == 10 && mapY == 10 )
+                        {
+                            _characterTile.Draw( canvas, destination );
                         }
                     }
                     //var cellX = ( x - ( ( int ) Math.Floor( dirtyRect.Top ) % 64 ) / 64 );
