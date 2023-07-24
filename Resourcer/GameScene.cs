@@ -1,5 +1,6 @@
 ﻿using OpenGameKit.Generators;
 using OpenGameKit.Generators.Abstractions;
+using OpenGameKit.Graphics;
 
 using Resourcer.Server.Generators;
 
@@ -7,152 +8,6 @@ using SkiaSharp;
 
 namespace Resourcer
 {
-    public interface ITile
-    {
-        void Draw( SKCanvas canvas, SKRect destination );
-    }
-
-    public class TileSetTile : ITile
-    {
-        private readonly TileSet _tileSet;
-
-        private readonly int _x;
-
-        private readonly int _y;
-
-        public TileSetTile( TileSet tileSet, int x, int y )
-        {
-            _tileSet = tileSet;
-            _x = x;
-            _y = y;
-        }
-
-        public void Draw( SKCanvas canvas, SKRect destination )
-        {
-            _tileSet.DrawTile( _x, _y, canvas, destination );
-        }
-    }
-
-    public class TileSet
-    {
-        /// <summary>
-        /// The source bitmap data.
-        /// </summary>
-        private readonly SKBitmap _source;
-
-        /// <summary>
-        /// The width and height of each tile.
-        /// </summary>
-        private readonly int _tileSize;
-
-        private readonly int _offsetY;
-
-        /// <summary>
-        /// The number of tiles in the X axis.
-        /// </summary>
-        private readonly int _tileWidthCount;
-
-        /// <summary>
-        /// The number of tiles in the Y axis.
-        /// </summary>
-        private readonly int _tileHeightCount;
-
-        public TileSet( Stream stream, int tileSize, int offsetY = 0 )
-        {
-            _source = SKBitmap.Decode( stream );
-            _source.SetImmutable();
-
-            _tileSize = tileSize;
-            _offsetY = offsetY;
-            _tileWidthCount = _source.Width / tileSize;
-            _tileHeightCount = _source.Height / tileSize;
-        }
-
-        public ITile TileAt( int x, int y )
-        {
-            return new TileSetTile( this, x, y );
-        }
-
-        public void DrawTile( int x, int y, SKCanvas canvas, SKRect destination )
-        {
-            if ( x < 0 || y < 0 || x >= _tileWidthCount || y >= _tileHeightCount )
-            {
-                return;
-            }
-
-            var src = new SKRect( x * _tileSize, (y * _tileSize) + (_offsetY * y), ( x + 1 ) * _tileSize, ( y + 1 ) * _tileSize );
-
-            canvas.DrawBitmap( _source, src, destination );
-        }
-    }
-
-    public class TileSeries
-    {
-        private readonly ITile[] _sourceTiles;
-
-        public int Count => _sourceTiles.Length;
-
-        public TileSeries( params ITile[] sourceTiles )
-        {
-            _sourceTiles = sourceTiles;
-        }
-
-        public void DrawTile( int index, SKCanvas canvas, SKRect destination )
-        {
-            if ( index < 0 || index >= _sourceTiles.Length )
-            {
-                return;
-            }
-
-            _sourceTiles[index].Draw( canvas, destination );
-        }
-    }
-
-    public class AdditiveTile : ITile
-    {
-        private readonly ITile[] _sourceTiles;
-
-        public int Count => _sourceTiles.Length;
-
-        public AdditiveTile( params ITile[] sourceTiles )
-        {
-            _sourceTiles = sourceTiles;
-        }
-
-        public void Draw( SKCanvas canvas, SKRect destination )
-        {
-            for ( int i = 0; i < _sourceTiles.Length; i++ )
-            {
-                _sourceTiles[i].Draw( canvas, destination );
-            }
-        }
-    }
-
-    public class AnimatedTile : ITile
-    {
-        private int _index;
-
-        private readonly ITile[] _sourceTiles;
-
-        public int Count => _sourceTiles.Length;
-
-        public AnimatedTile( params ITile[] sourceTiles )
-        {
-            _sourceTiles = sourceTiles;
-        }
-
-        public void Draw( SKCanvas canvas, SKRect destination )
-        {
-            if ( _index >= _sourceTiles.Length )
-            {
-                _index = 0;
-            }
-
-            _sourceTiles[_index++].Draw( canvas, destination );
-        }
-    }
-
-
     public interface IScene
     {
         void Draw( SKCanvas canvas, RectF dirtyRect );
@@ -162,14 +17,13 @@ namespace Resourcer
     {
         public PointF Offset { get; set; } = Point.Zero;
 
-        private readonly TileSet _overworld;
-        private readonly TileSeries _grassTiles;
-        private readonly TileSeries _waterTiles;
-        private readonly TileSeries _tundraTiles;
-        private readonly TileSeries _mountainTiles;
-        private readonly TileSeries _desertTiles;
-        private readonly TileSeries _forestTiles;
-        private readonly ITile _characterTile;
+        private readonly IReadOnlyList<ISprite> _grassTiles;
+        private readonly IReadOnlyList<ISprite> _waterTiles;
+        private readonly IReadOnlyList<ISprite> _tundraTiles;
+        private readonly IReadOnlyList<ISprite> _mountainTiles;
+        private readonly IReadOnlyList<ISprite> _desertTiles;
+        private readonly IReadOnlyList<ISprite> _forestTiles;
+        private readonly ISprite _characterTile;
 
         private readonly byte[,] _map;
 
@@ -177,46 +31,57 @@ namespace Resourcer
         {
             using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.Resources.Embedded.overworld.png" ) )
             {
-                _overworld = new TileSet( stream, 16 );
+                var overworld = new GridTileSet( stream, 16, 16 );
+
+                _grassTiles = new[]
+                {
+                    overworld.GetTileAt( 0, 0 ),
+                    overworld.GetTileAt( 7, 9 ),
+                    overworld.GetTileAt( 8, 9 ),
+                    overworld.GetTileAt( 7, 10 ),
+                    overworld.GetTileAt( 8, 10 )
+                };
+
+                _waterTiles = new[]
+                {
+                    overworld.GetTileAt( 0, 1 ),
+                    overworld.GetTileAt( 1, 1 ),
+                    overworld.GetTileAt( 2, 1 ),
+                    overworld.GetTileAt( 3, 1 ),
+                    overworld.GetTileAt( 0, 2 ),
+                    overworld.GetTileAt( 1, 2 ),
+                    overworld.GetTileAt( 2, 2 ),
+                    overworld.GetTileAt( 3, 2 )
+                };
+
+                _tundraTiles = new[]
+                {
+                    overworld.GetTileAt( 14, 11 ),
+                    overworld.GetTileAt( 14, 12 )
+                };
+
+                _mountainTiles = new[]
+                {
+                    new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 7, 5 ) )
+                };
+
+                _desertTiles = new[] { overworld.GetTileAt( 2, 32 ) };
+
+                _forestTiles = new[]
+                {
+                    new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 2, 14 ) )
+                };
             }
-
-            _grassTiles = new TileSeries(
-                _overworld.TileAt( 0, 0 ),
-                _overworld.TileAt( 7, 9 ),
-                _overworld.TileAt( 8, 9 ),
-                _overworld.TileAt( 7, 10 ),
-                _overworld.TileAt( 8, 10 ) );
-
-            _waterTiles = new TileSeries(
-                _overworld.TileAt( 0, 1 ),
-                _overworld.TileAt( 1, 1 ),
-                _overworld.TileAt( 2, 1 ),
-                _overworld.TileAt( 3, 1 ),
-                _overworld.TileAt( 0, 2 ),
-                _overworld.TileAt( 1, 2 ),
-                _overworld.TileAt( 2, 2 ),
-                _overworld.TileAt( 3, 2 ) );
-
-            _tundraTiles = new TileSeries(
-                _overworld.TileAt( 14, 11 ),
-                _overworld.TileAt( 14, 12 ) );
-
-            _mountainTiles = new TileSeries(
-                new AdditiveTile( _overworld.TileAt( 0, 0 ), _overworld.TileAt( 7, 5 ) ) );
-
-            _desertTiles = new TileSeries( _overworld.TileAt( 2, 32 ) );
-
-            _forestTiles = new TileSeries(
-                new AdditiveTile( _overworld.TileAt( 0, 0 ), _overworld.TileAt( 2, 14 ) ) );
 
             using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.Resources.Embedded.m_01.png" ) )
             {
-                var character = new TileSet( stream, 16, 1 );
+                var character = new UnstructuredTileSet( stream );
 
-                _characterTile = new AnimatedTile(
-                    character.TileAt( 0, 0 ),
-                    character.TileAt( 0, 1 ),
-                    character.TileAt( 0, 2 ) );
+                _characterTile = new AnimatedSprite(
+                    character.GetTileAt( 0, 1, 16, 16 ),
+                    character.GetTileAt( 0, 18, 16, 16 ),
+                    character.GetTileAt( 0, 1, 16, 16 ),
+                    character.GetTileAt( 0, 35, 16, 16 ) );
             }
 
             var serviceCollection = new ServiceCollection();
@@ -237,6 +102,8 @@ namespace Resourcer
             sw = System.Diagnostics.Stopwatch.StartNew();
             _map = mg.CreateMap( 0, 0, 256, 256 );
             sw.Stop();
+
+            System.Diagnostics.Debug.WriteLine( $"Created 256x256 map chunk in {sw.Elapsed.TotalMilliseconds}ms." );
         }
 
         public void Draw( SKCanvas canvas, RectF dirtyRect )
@@ -284,27 +151,27 @@ namespace Resourcer
                         if ( biome == 'G' )
                         {
                             var tileX = Math.Abs( mapX ) % _grassTiles.Count;
-                            _grassTiles.DrawTile( tileX, canvas, destination );
+                            _grassTiles[tileX].Draw( canvas, destination );
                         }
                         else if ( biome == 'W' )
                         {
-                            _waterTiles.DrawTile( 0, canvas, destination );
+                            _waterTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'T' )
                         {
-                            _tundraTiles.DrawTile( 0, canvas, destination );
+                            _tundraTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'M' )
                         {
-                            _mountainTiles.DrawTile( 0, canvas, destination );
+                            _mountainTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'D' )
                         {
-                            _desertTiles.DrawTile( 0, canvas, destination );
+                            _desertTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'F' )
                         {
-                            _forestTiles.DrawTile( 0, canvas, destination );
+                            _forestTiles[0].Draw( canvas, destination );
                         }
                         else
                         {

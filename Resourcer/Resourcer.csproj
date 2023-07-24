@@ -57,6 +57,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\OpenGameKit.Graphics\OpenGameKit.Graphics.csproj" />
 	  <ProjectReference Include="..\Resourcer.Server.Generators\Resourcer.Server.Generators.csproj" />
 	</ItemGroup>
 
