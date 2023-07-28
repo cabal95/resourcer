@@ -10,9 +10,10 @@ public class Program
     {
         Application.Init();
 
-        var myWin = new Window( "My GTK# App" );
+        var myWin = new Window( "Resourcer" );
         var scale = myWin.Screen.Resolution / 96.0;
         myWin.Resize( ( int ) ( 800 * scale ), ( int ) ( 450 * scale ) );
+        myWin.SetPosition( WindowPosition.Center );
 
         myWin.Destroyed += MyWin_Destroyed;
 

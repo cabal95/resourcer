@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 using OpenGameKit.Generators;
 using OpenGameKit.Generators.Abstractions;
@@ -33,7 +31,7 @@ namespace Resourcer
 
         public GameScene()
         {
-            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.Resources.Embedded.overworld.png" ) )
+            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.overworld.png" ) )
             {
                 var overworld = new GridTileSet( stream, 16, 16 );
 
@@ -77,7 +75,7 @@ namespace Resourcer
                 };
             }
 
-            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.Resources.Embedded.m_01.png" ) )
+            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.m_01.png" ) )
             {
                 var character = new UnstructuredTileSet( stream );
 

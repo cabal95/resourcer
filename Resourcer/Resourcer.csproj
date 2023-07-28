@@ -16,12 +16,6 @@
     <Page Remove="Platforms\**\*.xaml" />
   </ItemGroup>
 
-  <!-- Resources -->
-  <ItemGroup>
-    <None Remove="Resources\**\*" />
-    <EmbeddedResource Include="Resources\Embedded\**\*" />
-  </ItemGroup>
-	
   <!-- Windows -->
   <ItemGroup Condition="$(TargetFramework.Contains('-windows')) == true">
     <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.3" />
@@ -42,9 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenGameKit.Generators\OpenGameKit.Generators.csproj" />
-    <ProjectReference Include="..\OpenGameKit.Graphics\OpenGameKit.Graphics.csproj" />
-    <ProjectReference Include="..\Resourcer.Server.Generators\Resourcer.Server.Generators.csproj" />
+    <ProjectReference Include="..\Resourcer.UI\Resourcer.UI.csproj" />
   </ItemGroup>
 
 </Project>
