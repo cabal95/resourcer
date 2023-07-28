@@ -19,33 +19,16 @@ namespace Resourcer
         public void Draw( SKCanvas canvas, SKSizeI size, SKRectI dirtyRect )
         {
             // Determine the X,Y map coordinates we will start painting from.
-            var mapLeft = ( Offset.X + dirtyRect.Left ) / 64;
-            var mapTop = ( Offset.Y + dirtyRect.Top ) / 64;
+            var mapLeft = ( int ) Math.Floor( ( Offset.X + dirtyRect.Left ) / 64.0 );
+            var mapTop = ( int ) Math.Floor( ( Offset.Y + dirtyRect.Top ) / 64.0 );
 
-            var offsetXRemainder = Offset.X % 64;
-            var offsetYRemainder = Offset.Y % 64;
+            // Determine the tile offset.
+            var tileOffsetX = Offset.X < 0 ? 64 + ( Offset.X % 64 ) : Offset.X % 64;
+            var tileOffsetY = Offset.Y < 0 ? 64 + ( Offset.Y % 64 ) : Offset.Y % 64;
 
             // Determine the starting painting position.
-            int left = ( dirtyRect.Left / 64 ) * 64;
-            int top = ( dirtyRect.Top / 64 ) * 64;
-
-            if ( offsetXRemainder > 0 )
-            {
-                left -= offsetXRemainder;
-            }
-            else if ( offsetXRemainder < 0 )
-            {
-                left -= 64 + offsetXRemainder;
-            }
-
-            if ( offsetYRemainder > 0 )
-            {
-                top -= offsetYRemainder;
-            }
-            else if ( offsetYRemainder < 0 )
-            {
-                top -= 64 + offsetYRemainder;
-            }
+            int left = ( ( dirtyRect.Left / 64 ) * 64 ) - tileOffsetX;
+            int top = ( ( dirtyRect.Top / 64 ) * 64 ) - tileOffsetY;
 
             for ( int y = top, mapY = mapTop; y < dirtyRect.Bottom; y += 64, mapY++ )
             {

@@ -12,12 +12,14 @@
   <!-- Remove all default platform files -->
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />
+    <None Include="Platforms\**\*" />
     <Page Remove="Platforms\**\*.xaml" />
   </ItemGroup>
 
   <!-- Windows -->
   <ItemGroup Condition="$(TargetFramework.Contains('-windows')) == true">
     <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.3" />
+    <None Remove="Platforms\Windows\**\*.xaml" />
     <ApplicationDefinition Include="Platforms\Windows\App.xaml" />
     <Compile Include="Platforms\Windows\**\*.cs" />
     <Page Include="Platforms\Windows\MainWindow.xaml" />

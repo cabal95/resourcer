@@ -34,4 +34,13 @@ public class SceneManager
     {
         _currentScene.Draw( canvas, size, dirtyRect );
     }
+
+    public void Pan( SKPointI amount )
+    {
+        if ( _currentScene is GameScene gameScene )
+        {
+            gameScene.Offset = new SKPointI( gameScene.Offset.X - amount.X, gameScene.Offset.Y - amount.Y );
+            _platform.UpdateCanvas();
+        }
+    }
 }
