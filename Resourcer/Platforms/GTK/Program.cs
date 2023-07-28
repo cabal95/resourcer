@@ -1,10 +1,14 @@
 ﻿using Gtk;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using Resourcer.UI;
+
 namespace Resourcer.Platforms.Gtk;
 
 public class Program
 {
-    private static IScene _currentScene = new GameScene();
+    private static SceneManager? _sceneManager;
 
     public static void Main( string[] args )
     {
@@ -34,14 +38,32 @@ public class Program
 
         box.Add( canvas );
 
+        var serviceCollection = new ServiceCollection();
+
+        serviceCollection.UseResourcerUI();
+        serviceCollection.AddSingleton<IPlatform>( _ => new Platform( canvas ) );
+
+        var engineServices = serviceCollection.BuildServiceProvider();
+
+        _sceneManager = ActivatorUtilities.GetServiceOrCreateInstance<SceneManager>( engineServices );
+
+
         myWin.ShowAll();
 
-        Application.Run();
+        try
+        {
+            Application.Run();
+        }
+        catch ( Exception ex )
+        {
+            System.Diagnostics.Debug.WriteLine( ex.Message );
+            throw;
+        }
     }
 
     private static void Canvas_PaintSurface( object? sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e )
     {
-        _currentScene.Draw( e.Surface.Canvas, new SkiaSharp.SKRect( 0, 0, e.Info.Width, e.Info.Height ) );
+        _sceneManager?.Paint( e.Surface.Canvas, new SkiaSharp.SKRect( 0, 0, e.Info.Width, e.Info.Height ) );
     }
 
     private static void Box_MotionNotifyEvent( object o, MotionNotifyEventArgs args )

@@ -1,5 +1,9 @@
 ﻿using System.Windows;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using Resourcer.UI;
+
 using SkiaSharp.Views.Desktop;
 
 namespace Resourcer.Platforms.Windows;
@@ -9,17 +13,25 @@ namespace Resourcer.Platforms.Windows;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private IScene _currentScene;
+    private readonly IServiceProvider _engineServices;
+    private readonly SceneManager _sceneManager;
 
     public MainWindow()
     {
-        _currentScene = new GameScene();
-
         InitializeComponent();
+
+        var serviceCollection = new ServiceCollection();
+
+        serviceCollection.UseResourcerUI();
+        serviceCollection.AddSingleton<IPlatform>( _ => new Platform( CanvasView ) );
+        _engineServices = serviceCollection.BuildServiceProvider();
+
+        _sceneManager = ActivatorUtilities.GetServiceOrCreateInstance<SceneManager>( _engineServices );
+
     }
 
     protected void Canvas_PaintSurface( object sender, SKPaintSurfaceEventArgs e )
     {
-        _currentScene.Draw( e.Surface.Canvas, new SkiaSharp.SKRect( 0, 0, e.Info.Width, e.Info.Height ) );
+        _sceneManager.Paint( e.Surface.Canvas, new SkiaSharp.SKRect( 0, 0, e.Info.Width, e.Info.Height ) );
     }
 }

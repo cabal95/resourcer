@@ -1,10 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-using OpenGameKit.Generators;
-using OpenGameKit.Generators.Abstractions;
-using OpenGameKit.Graphics;
-
-using Resourcer.Server.Generators;
+﻿using Resourcer.UI;
 
 using SkiaSharp;
 
@@ -19,93 +13,11 @@ namespace Resourcer
     {
         public SKPoint Offset { get; set; } = SKPoint.Empty;
 
-        private readonly IReadOnlyList<ISprite> _grassTiles;
-        private readonly IReadOnlyList<ISprite> _waterTiles;
-        private readonly IReadOnlyList<ISprite> _tundraTiles;
-        private readonly IReadOnlyList<ISprite> _mountainTiles;
-        private readonly IReadOnlyList<ISprite> _desertTiles;
-        private readonly IReadOnlyList<ISprite> _forestTiles;
-        private readonly ISprite _characterTile;
+        private SpriteProvider _sprites;
 
-        private readonly byte[,] _map;
-
-        public GameScene()
+        public GameScene( SpriteProvider sprites )
         {
-            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.overworld.png" ) )
-            {
-                var overworld = new GridTileSet( stream, 16, 16 );
-
-                _grassTiles = new[]
-                {
-                    overworld.GetTileAt( 0, 0 ),
-                    overworld.GetTileAt( 7, 9 ),
-                    overworld.GetTileAt( 8, 9 ),
-                    overworld.GetTileAt( 7, 10 ),
-                    overworld.GetTileAt( 8, 10 )
-                };
-
-                _waterTiles = new[]
-                {
-                    overworld.GetTileAt( 0, 1 ),
-                    overworld.GetTileAt( 1, 1 ),
-                    overworld.GetTileAt( 2, 1 ),
-                    overworld.GetTileAt( 3, 1 ),
-                    overworld.GetTileAt( 0, 2 ),
-                    overworld.GetTileAt( 1, 2 ),
-                    overworld.GetTileAt( 2, 2 ),
-                    overworld.GetTileAt( 3, 2 )
-                };
-
-                _tundraTiles = new[]
-                {
-                    overworld.GetTileAt( 14, 11 ),
-                    overworld.GetTileAt( 14, 12 )
-                };
-
-                _mountainTiles = new[]
-                {
-                    new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 7, 5 ) )
-                };
-
-                _desertTiles = new[] { overworld.GetTileAt( 2, 32 ) };
-
-                _forestTiles = new[]
-                {
-                    new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 2, 14 ) )
-                };
-            }
-
-            using ( Stream stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.m_01.png" ) )
-            {
-                var character = new UnstructuredTileSet( stream );
-
-                _characterTile = new AnimatedSprite(
-                    character.GetTileAt( 0, 1, 16, 16 ),
-                    character.GetTileAt( 0, 18, 16, 16 ),
-                    character.GetTileAt( 0, 1, 16, 16 ),
-                    character.GetTileAt( 0, 35, 16, 16 ) );
-            }
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton<INoiseGenerator2D>( new PerlinNoise( 1234u ) );
-            serviceCollection.AddSingleton<IParameterGenerator2D, ParameterGenerator2D>();
-            serviceCollection.AddSingleton<IMapParameterGenerator2D, MapParameterGenerator2D>();
-            serviceCollection.AddSingleton<IMapCellProvider<byte>, TerrainCellProvider>();
-            serviceCollection.AddSingleton( typeof( IMapGenerator2D<> ), typeof( MapGenerator2D<> ) );
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-
-            using var scope = serviceProvider.CreateScope();
-            var mg = scope.ServiceProvider.GetRequiredService<IMapGenerator2D<byte>>();
-
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            _map = mg.CreateMap( 0, 0, 256, 256 );
-            sw.Stop();
-
-            sw = System.Diagnostics.Stopwatch.StartNew();
-            _map = mg.CreateMap( 0, 0, 256, 256 );
-            sw.Stop();
-
-            System.Diagnostics.Debug.WriteLine( $"Created 256x256 map chunk in {sw.Elapsed.TotalMilliseconds}ms." );
+            _sprites = sprites;
         }
 
         public void Draw( SKCanvas canvas, SKRect dirtyRect )
@@ -149,31 +61,32 @@ namespace Resourcer
                     {
                         var destination = new SKRect( x, y, x + 64, y + 64 );
 
-                        var biome = _map[mapX, mapY];
+                        var biome = _sprites.Map[mapX, mapY];
+
                         if ( biome == 'G' )
                         {
-                            var tileX = Math.Abs( mapX ) % _grassTiles.Count;
-                            _grassTiles[tileX].Draw( canvas, destination );
+                            var tileX = Math.Abs( mapX ) % _sprites.GrassTiles.Count;
+                            _sprites.GrassTiles[tileX].Draw( canvas, destination );
                         }
                         else if ( biome == 'W' )
                         {
-                            _waterTiles[0].Draw( canvas, destination );
+                            _sprites.WaterTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'T' )
                         {
-                            _tundraTiles[0].Draw( canvas, destination );
+                            _sprites.TundraTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'M' )
                         {
-                            _mountainTiles[0].Draw( canvas, destination );
+                            _sprites.MountainTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'D' )
                         {
-                            _desertTiles[0].Draw( canvas, destination );
+                            _sprites.DesertTiles[0].Draw( canvas, destination );
                         }
                         else if ( biome == 'F' )
                         {
-                            _forestTiles[0].Draw( canvas, destination );
+                            _sprites.ForestTiles[0].Draw( canvas, destination );
                         }
                         else
                         {
@@ -182,7 +95,7 @@ namespace Resourcer
 
                         if ( mapX == 10 && mapY == 10 )
                         {
-                            _characterTile.Draw( canvas, destination );
+                            _sprites.CharacterTile.Draw( canvas, destination );
                         }
                     }
                     //var cellX = ( x - ( ( int ) Math.Floor( dirtyRect.Top ) % 64 ) / 64 );

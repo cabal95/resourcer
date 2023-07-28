@@ -12,7 +12,6 @@
   <!-- Remove all default platform files -->
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />
-    <None Include="Platforms\**\*.cs" />
     <Page Remove="Platforms\**\*.xaml" />
   </ItemGroup>
 

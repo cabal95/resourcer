@@ -6,5 +6,5 @@
         xmlns:sk="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <sk:SKElement PaintSurface="Canvas_PaintSurface" />
+    <sk:SKElement x:Name="CanvasView" PaintSurface="Canvas_PaintSurface" />
 </Window>
