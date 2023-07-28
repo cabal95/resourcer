@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcer", "Resourcer\Resourcer.csproj", "{A05007EF-10F5-4A59-A6AC-B3F05D57C9B1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcer.Server.Generators", "Resourcer.Server.Generators\Resourcer.Server.Generators.csproj", "{261757F5-5432-4E59-9B4F-8D4B1C4EE99F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcer.Server.Generators.Tests", "Resourcer.Server.Generators.Tests\Resourcer.Server.Generators.Tests.csproj", "{93A70DA9-0787-4964-866B-9B67029730C2}"
@@ -17,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{7EC739D8
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGameKit.Graphics", "OpenGameKit.Graphics\OpenGameKit.Graphics.csproj", "{612EC465-9F19-41D7-AE9D-341AE3560432}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenGameKit.Graphics", "OpenGameKit.Graphics\OpenGameKit.Graphics.csproj", "{612EC465-9F19-41D7-AE9D-341AE3560432}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcer", "Resourcer\Resourcer.csproj", "{B5AEA50B-04C2-4E9F-B055-B154577EB8E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,11 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A05007EF-10F5-4A59-A6AC-B3F05D57C9B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A05007EF-10F5-4A59-A6AC-B3F05D57C9B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A05007EF-10F5-4A59-A6AC-B3F05D57C9B1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{A05007EF-10F5-4A59-A6AC-B3F05D57C9B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A05007EF-10F5-4A59-A6AC-B3F05D57C9B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{261757F5-5432-4E59-9B4F-8D4B1C4EE99F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{261757F5-5432-4E59-9B4F-8D4B1C4EE99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{261757F5-5432-4E59-9B4F-8D4B1C4EE99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,6 +41,10 @@ Global
 		{612EC465-9F19-41D7-AE9D-341AE3560432}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{612EC465-9F19-41D7-AE9D-341AE3560432}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{612EC465-9F19-41D7-AE9D-341AE3560432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5AEA50B-04C2-4E9F-B055-B154577EB8E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5AEA50B-04C2-4E9F-B055-B154577EB8E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5AEA50B-04C2-4E9F-B055-B154577EB8E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5AEA50B-04C2-4E9F-B055-B154577EB8E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

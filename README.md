@@ -39,6 +39,7 @@ The map will consist of drawable tiles. Each tile is drawn at 64x64 pixels, thou
 
 https://opengameart.org/ is a great place to find simple 2D graphics. Most of what you find require attribution, but some don't.
 
+https://unity.com/how-to/beginner/game-development-terms Good description of various terms - most of which you probably know. But a good glossery if you can't think of a specific term.
 
 * https://opengameart.org/content/zelda-like-tilesets-and-sprites
 * https://opengameart.org/content/48-animated-old-school-rpg-characters-16x16

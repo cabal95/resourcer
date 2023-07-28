@@ -1,4 +1,8 @@
-﻿using OpenGameKit.Generators;
+﻿using System.IO;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using OpenGameKit.Generators;
 using OpenGameKit.Generators.Abstractions;
 using OpenGameKit.Graphics;
 
@@ -10,12 +14,12 @@ namespace Resourcer
 {
     public interface IScene
     {
-        void Draw( SKCanvas canvas, RectF dirtyRect );
+        void Draw( SKCanvas canvas, SKRect dirtyRect );
     }
 
     public class GameScene : IScene
     {
-        public PointF Offset { get; set; } = Point.Zero;
+        public SKPoint Offset { get; set; } = SKPoint.Empty;
 
         private readonly IReadOnlyList<ISprite> _grassTiles;
         private readonly IReadOnlyList<ISprite> _waterTiles;
@@ -91,7 +95,7 @@ namespace Resourcer
             serviceCollection.AddSingleton<IMapCellProvider<byte>, TerrainCellProvider>();
             serviceCollection.AddSingleton( typeof( IMapGenerator2D<> ), typeof( MapGenerator2D<> ) );
             var serviceProvider = serviceCollection.BuildServiceProvider();
-            
+
             using var scope = serviceProvider.CreateScope();
             var mg = scope.ServiceProvider.GetRequiredService<IMapGenerator2D<byte>>();
 
@@ -106,7 +110,7 @@ namespace Resourcer
             System.Diagnostics.Debug.WriteLine( $"Created 256x256 map chunk in {sw.Elapsed.TotalMilliseconds}ms." );
         }
 
-        public void Draw( SKCanvas canvas, RectF dirtyRect )
+        public void Draw( SKCanvas canvas, SKRect dirtyRect )
         {
             var start = DateTime.UtcNow;
 
