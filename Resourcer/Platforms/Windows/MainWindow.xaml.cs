@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Resourcer.UI;
 
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
 namespace Resourcer.Platforms.Windows;
@@ -32,6 +33,6 @@ public partial class MainWindow : Window
 
     protected void Canvas_PaintSurface( object sender, SKPaintSurfaceEventArgs e )
     {
-        _sceneManager.Paint( e.Surface.Canvas, new SkiaSharp.SKRect( 0, 0, e.Info.Width, e.Info.Height ) );
+        _sceneManager.Paint( e.Surface.Canvas, new SKSizeI(e.Info.Width, e.Info.Height), new SKRectI( 0, 0, e.Info.Width, e.Info.Height ) );
     }
 }

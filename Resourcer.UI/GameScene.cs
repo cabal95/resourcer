@@ -4,36 +4,30 @@ using SkiaSharp;
 
 namespace Resourcer
 {
-    public interface IScene
-    {
-        void Draw( SKCanvas canvas, SKRect dirtyRect );
-    }
-
     public class GameScene : IScene
     {
-        public SKPoint Offset { get; set; } = SKPoint.Empty;
+        public SKPointI Offset { get; set; } = SKPointI.Empty;
 
-        private SpriteProvider _sprites;
+        private readonly SpriteProvider _sprites;
 
         public GameScene( SpriteProvider sprites )
         {
             _sprites = sprites;
         }
 
-        public void Draw( SKCanvas canvas, SKRect dirtyRect )
+        /// <inheritdoc/>
+        public void Draw( SKCanvas canvas, SKSizeI size, SKRectI dirtyRect )
         {
-            var start = DateTime.UtcNow;
-
             // Determine the X,Y map coordinates we will start painting from.
-            var mapLeft = ( int ) Math.Floor( ( Offset.X + dirtyRect.Left ) / 64 );
-            var mapTop = ( int ) Math.Floor( ( Offset.Y + dirtyRect.Top ) / 64 );
+            var mapLeft = ( Offset.X + dirtyRect.Left ) / 64;
+            var mapTop = ( Offset.Y + dirtyRect.Top ) / 64;
 
-            var offsetXRemainder = ( int ) Math.Floor( Offset.X ) % 64;
-            var offsetYRemainder = ( int ) Math.Floor( Offset.Y ) % 64;
+            var offsetXRemainder = Offset.X % 64;
+            var offsetYRemainder = Offset.Y % 64;
 
             // Determine the starting painting position.
-            int left = ( ( ( int ) Math.Floor( dirtyRect.Left / 64 ) ) * 64 );
-            int top = ( ( int ) Math.Floor( dirtyRect.Top / 64 ) ) * 64;
+            int left = ( dirtyRect.Left / 64 ) * 64;
+            int top = ( dirtyRect.Top / 64 ) * 64;
 
             if ( offsetXRemainder > 0 )
             {
@@ -98,15 +92,8 @@ namespace Resourcer
                             _sprites.CharacterTile.Draw( canvas, destination );
                         }
                     }
-                    //var cellX = ( x - ( ( int ) Math.Floor( dirtyRect.Top ) % 64 ) / 64 );
-                    //var src = GetTileRect( cellX % 5, 0 );
-
-                    //canvas.DrawBitmap( _grassTiles, src, new SKRect( x + Offset.X, y + Offset.Y, x + Offset.X + 64, y + Offset.Y + 64 ) );
                 }
             }
-
-            var end = DateTime.UtcNow;
-            System.Diagnostics.Debug.WriteLine( $"Draw took {( end - start ).TotalMilliseconds}ms." );
         }
     }
 }

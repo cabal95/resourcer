@@ -8,24 +8,51 @@ using Resourcer.Server.Generators;
 
 namespace Resourcer.UI;
 
+/// <summary>
+/// Provides all the sprites for the UI.
+/// </summary>
 public class SpriteProvider
 {
+    /// <summary>
+    /// The set of tiles that will be used to draw grass.
+    /// </summary>
     public IReadOnlyList<ISprite> GrassTiles { get; }
 
+    /// <summary>
+    /// The set of tiles that will be used to draw water.
+    /// </summary>
     public IReadOnlyList<ISprite> WaterTiles { get; }
 
+    /// <summary>
+    /// The set of tiles that will be used to draw tundra.
+    /// </summary>
     public IReadOnlyList<ISprite> TundraTiles { get; }
 
+    /// <summary>
+    /// The set of tiles that will be used to draw mountain.
+    /// </summary>
     public IReadOnlyList<ISprite> MountainTiles { get; }
 
+    /// <summary>
+    /// The set of tiles that will be used to draw desert.
+    /// </summary>
     public IReadOnlyList<ISprite> DesertTiles { get; }
 
+    /// <summary>
+    /// the set of tiles that will be used to draw forest.
+    /// </summary>
     public IReadOnlyList<ISprite> ForestTiles { get; }
 
+    /// <summary>
+    /// The sprite that will be used to draw the character.
+    /// </summary>
     public ISprite CharacterTile { get; }
 
     public readonly byte[,] Map;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="SpriteProvider"/>.
+    /// </summary>
     public SpriteProvider()
     {
         using ( var stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.overworld.png" ) )
@@ -114,5 +141,4 @@ public class SpriteProvider
 
         System.Diagnostics.Debug.WriteLine( $"Created 256x256 map chunk in {sw.Elapsed.TotalMilliseconds}ms." );
     }
-
 }

@@ -30,8 +30,8 @@ public class SceneManager
         } );
     }
 
-    public void Paint( SKCanvas canvas, SKRect dirtyRect )
+    public void Paint( SKCanvas canvas, SKSizeI size, SKRectI dirtyRect )
     {
-        _currentScene.Draw( canvas, dirtyRect );
+        _currentScene.Draw( canvas, size, dirtyRect );
     }
 }
