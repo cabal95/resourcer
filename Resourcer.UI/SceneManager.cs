@@ -34,12 +34,15 @@ public class SceneManager
 
     public void Paint( SKCanvas canvas, SKSizeI size, SKRectI dirtyRect )
     {
-        if ( _currentScene.Width != size.Width || _currentScene.Height != size.Height )
+        if ( _currentScene.Frame.Size != size )
         {
-            _currentScene.SetSize( size.Width, size.Height );
+            _currentScene.Frame = SKRectI.Create( _currentScene.Frame.Location, size );
         }
 
-        _currentScene.Draw( canvas, dirtyRect );
+        canvas.Save();
+        canvas.ClipRect(_currentScene.Frame);
+        _currentScene.Draw( canvas );
+        canvas.Restore();
     }
 
     public void Pan( SKPointI amount )

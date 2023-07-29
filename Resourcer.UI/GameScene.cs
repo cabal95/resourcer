@@ -4,91 +4,83 @@ using Resourcer.UI;
 
 using SkiaSharp;
 
-namespace Resourcer
+namespace Resourcer;
+
+public class GameScene : LayoutScene
 {
-    public class GameScene : IScene
+    public SKPointI Offset { get; set; } = SKPointI.Empty;
+
+    private readonly SpriteProvider _sprites;
+
+    public GameScene( SpriteProvider sprites )
     {
-        /// <inheritdoc/>
-        public int Width { get; private set; }
+        _sprites = sprites;
+    }
 
-        /// <inheritdoc/>
-        public int Height { get; private set; }
+    /// <inheritdoc/>
+    public override void Draw( SKCanvas canvas )
+    {
+        // Determine the X,Y map coordinates we will start painting from.
+        var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
+        var mapTop = ( int ) Math.Floor( Offset.Y / 64.0 );
+        var mapRight = ( int ) Math.Ceiling( ( Offset.X + Frame.Width ) / 64.0 );
+        var mapBottom = ( int ) Math.Ceiling( ( Offset.Y + Frame.Height ) / 64.0 );
 
-        public SKPointI Offset { get; set; } = SKPointI.Empty;
+        // Determine the tile offset.
+        var tileOffsetX = Offset.X % 64 != 0
+            ? Offset.X < 0 ? 64 + ( Offset.X % 64 ) : Offset.X % 64
+            : 0;
+        var tileOffsetY = Offset.Y % 64 != 0
+            ? Offset.Y < 0 ? 64 + ( Offset.Y % 64 ) : Offset.Y % 64
+            : 0;
 
-        private readonly SpriteProvider _sprites;
+        // Determine the starting painting position.
+        int left = Frame.Left - tileOffsetX;
+        int top = Frame.Top - tileOffsetY;
 
-        public GameScene( SpriteProvider sprites )
+        for ( int y = top, mapY = mapTop; mapY < mapBottom; y += 64, mapY++ )
         {
-            _sprites = sprites;
-        }
-
-        /// <inheritdoc/>
-        public void SetSize( int width, int height )
-        {
-            Width = width;
-            Height = height;
-        }
-
-        /// <inheritdoc/>
-        public void Draw( SKCanvas canvas, SKRectI dirtyRect )
-        {
-            // Determine the X,Y map coordinates we will start painting from.
-            var mapLeft = ( int ) Math.Floor( ( Offset.X + dirtyRect.Left ) / 64.0 );
-            var mapTop = ( int ) Math.Floor( ( Offset.Y + dirtyRect.Top ) / 64.0 );
-
-            // Determine the tile offset.
-            var tileOffsetX = Offset.X < 0 ? 64 + ( Offset.X % 64 ) : Offset.X % 64;
-            var tileOffsetY = Offset.Y < 0 ? 64 + ( Offset.Y % 64 ) : Offset.Y % 64;
-
-            // Determine the starting painting position.
-            int left = ( ( dirtyRect.Left / 64 ) * 64 ) - tileOffsetX;
-            int top = ( ( dirtyRect.Top / 64 ) * 64 ) - tileOffsetY;
-
-            for ( int y = top, mapY = mapTop; y < dirtyRect.Bottom; y += 64, mapY++ )
+            for ( int x = left, mapX = mapLeft; mapX < mapRight; x += 64, mapX++ )
             {
-                for ( int x = left, mapX = mapLeft; x < dirtyRect.Right; x += 64, mapX++ )
+                if ( mapX >= 0 && mapX < 256 && mapY >= 0 && mapY < 256 )
                 {
-                    if ( mapX >= 0 && mapX < 256 && mapY >= 0 && mapY < 256 )
+                    var destination = new SKRect( x, y, x + 64, y + 64 );
+
+                    var biome = _sprites.Map[mapX, mapY];
+
+                    if ( biome == 'G' )
                     {
-                        var destination = new SKRect( x, y, x + 64, y + 64 );
+                        var tileX = Math.Abs( mapX ) % _sprites.GrassTiles.Count;
+                        _sprites.GrassTiles[tileX].Draw( canvas, destination );
+                    }
+                    else if ( biome == 'W' )
+                    {
+                        _sprites.WaterTiles[0].Draw( canvas, destination );
+                    }
+                    else if ( biome == 'T' )
+                    {
+                        _sprites.TundraTiles[0].Draw( canvas, destination );
+                    }
+                    else if ( biome == 'M' )
+                    {
+                        _sprites.MountainTiles[0].Draw( canvas, destination );
+                    }
+                    else if ( biome == 'D' )
+                    {
+                        _sprites.DesertTiles[0].Draw( canvas, destination );
+                    }
+                    else if ( biome == 'F' )
+                    {
+                        _sprites.ForestTiles[0].Draw( canvas, destination );
+                    }
+                    else
+                    {
 
-                        var biome = _sprites.Map[mapX, mapY];
+                    }
 
-                        if ( biome == 'G' )
-                        {
-                            var tileX = Math.Abs( mapX ) % _sprites.GrassTiles.Count;
-                            _sprites.GrassTiles[tileX].Draw( canvas, destination );
-                        }
-                        else if ( biome == 'W' )
-                        {
-                            _sprites.WaterTiles[0].Draw( canvas, destination );
-                        }
-                        else if ( biome == 'T' )
-                        {
-                            _sprites.TundraTiles[0].Draw( canvas, destination );
-                        }
-                        else if ( biome == 'M' )
-                        {
-                            _sprites.MountainTiles[0].Draw( canvas, destination );
-                        }
-                        else if ( biome == 'D' )
-                        {
-                            _sprites.DesertTiles[0].Draw( canvas, destination );
-                        }
-                        else if ( biome == 'F' )
-                        {
-                            _sprites.ForestTiles[0].Draw( canvas, destination );
-                        }
-                        else
-                        {
-
-                        }
-
-                        if ( mapX == 10 && mapY == 10 )
-                        {
-                            _sprites.CharacterTile.Draw( canvas, destination );
-                        }
+                    if ( mapX == 10 && mapY == 10 )
+                    {
+                        _sprites.CharacterTile.Draw( canvas, destination );
                     }
                 }
             }

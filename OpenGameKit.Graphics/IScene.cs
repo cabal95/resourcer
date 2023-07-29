@@ -8,26 +8,23 @@ namespace OpenGameKit.Graphics;
 public interface IScene
 {
     /// <summary>
-    /// The current width of the scene.
+    /// The current position and size of the scene.
     /// </summary>
-    int Width { get; }
+    SKRectI Frame { get; set; }
 
     /// <summary>
-    /// The current height of the scene.
+    /// Calculates and returns the desired size of the element given the width
+    /// height constraints. It is not guaranteed that the return value will
+    /// be used for the element frame.
     /// </summary>
-    int Height { get; }
-
-    /// <summary>
-    /// Sets the size of the entire scene.
-    /// </summary>
-    /// <param name="width">The width of the scene.</param>
-    /// <param name="height">The height of the scene.</param>
-    void SetSize( int width, int height );
+    /// <param name="widthConstraint">The maximum number of pixels wide the element can be.</param>
+    /// <param name="heightConstraint">The maximum number of pixels high the element can be.</param>
+    /// <returns>The size that the element is requesting.</returns>
+    SKSizeI GetDesiredSize( int widthConstraint, int heightConstraint );
 
     /// <summary>
     /// Draws the scene.
     /// </summary>
     /// <param name="canvas">The canvas object that the scene will be drawn onto.</param>
-    /// <param name="dirtyRect">The area of the canvas that needs to be re-drawn.</param>
-    void Draw( SKCanvas canvas, SKRectI dirtyRect );
+    void Draw( SKCanvas canvas );
 }
