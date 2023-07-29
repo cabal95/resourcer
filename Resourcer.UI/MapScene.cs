@@ -82,7 +82,7 @@ public class MapScene : IScene
 
                     if ( biome == 'G' )
                     {
-                        var tileX = Math.Abs( mapX ) % _sprites.GrassTiles.Count;
+                        var tileX = Math.Abs( mapX ) * Math.Abs( mapY ) % _sprites.GrassTiles.Count;
                         _sprites.GrassTiles[tileX].Draw( canvas, destination );
                     }
                     else if ( biome == 'W' )

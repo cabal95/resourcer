@@ -66,42 +66,42 @@ public class SpriteProvider
 
             GrassTiles = new[]
             {
-                    overworld.GetTileAt( 0, 0 ),
-                    overworld.GetTileAt( 7, 9 ),
-                    overworld.GetTileAt( 8, 9 ),
-                    overworld.GetTileAt( 7, 10 ),
-                    overworld.GetTileAt( 8, 10 )
-                };
+                overworld.GetTileAt( 0, 0 ),
+                overworld.GetTileAt( 7, 9 ),
+                overworld.GetTileAt( 8, 9 ),
+                overworld.GetTileAt( 7, 10 ),
+                overworld.GetTileAt( 8, 10 )
+            };
 
             WaterTiles = new[]
             {
-                    overworld.GetTileAt( 0, 1 ),
-                    overworld.GetTileAt( 1, 1 ),
-                    overworld.GetTileAt( 2, 1 ),
-                    overworld.GetTileAt( 3, 1 ),
-                    overworld.GetTileAt( 0, 2 ),
-                    overworld.GetTileAt( 1, 2 ),
-                    overworld.GetTileAt( 2, 2 ),
-                    overworld.GetTileAt( 3, 2 )
-                };
+                overworld.GetTileAt( 0, 1 ),
+                overworld.GetTileAt( 1, 1 ),
+                overworld.GetTileAt( 2, 1 ),
+                overworld.GetTileAt( 3, 1 ),
+                overworld.GetTileAt( 0, 2 ),
+                overworld.GetTileAt( 1, 2 ),
+                overworld.GetTileAt( 2, 2 ),
+                overworld.GetTileAt( 3, 2 )
+            };
 
             TundraTiles = new[]
             {
-                    overworld.GetTileAt( 14, 11 ),
-                    overworld.GetTileAt( 14, 12 )
-                };
+                overworld.GetTileAt( 14, 11 ),
+                overworld.GetTileAt( 14, 12 )
+            };
 
             MountainTiles = new[]
             {
-                    new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 7, 5 ) )
-                };
+                new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 7, 5 ) )
+            };
 
             DesertTiles = new[] { overworld.GetTileAt( 2, 32 ) };
 
             ForestTiles = new[]
             {
-                    new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 2, 14 ) )
-                };
+                new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 2, 14 ) )
+            };
         }
 
         using ( var stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.m_01.png" ) )

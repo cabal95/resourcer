@@ -24,6 +24,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        CanvasView.IgnorePixelScaling = true;
         CanvasView.MouseDown += CanvasView_MouseDown;
         CanvasView.MouseUp += CanvasView_MouseUp;
         CanvasView.MouseMove += CanvasView_MouseMove;
@@ -38,19 +39,18 @@ public partial class MainWindow : Window
 
     }
 
-    private SKPointI GetScaledPosition( MouseEventArgs e )
+    private SKPointI GetNormalizedPosition( MouseEventArgs e )
     {
-        var dpi = VisualTreeHelper.GetDpi( CanvasView );
         var position = e.GetPosition( CanvasView );
 
-        return new SKPointI( ( int ) Math.Round( position.X * dpi.DpiScaleX ), ( int ) Math.Round( position.Y * dpi.DpiScaleY ) );
+        return new SKPointI( ( int ) Math.Round( position.X ), ( int ) Math.Round( position.Y ) );
     }
 
     private void CanvasView_MouseMove( object sender, System.Windows.Input.MouseEventArgs e )
     {
         if ( _lastDragPosition != null )
         {
-            var position = GetScaledPosition( e );
+            var position = GetNormalizedPosition( e );
             var offsetX = position.X - _lastDragPosition.Value.X;
             var offsetY = position.Y - _lastDragPosition.Value.Y;
 
@@ -71,12 +71,12 @@ public partial class MainWindow : Window
     {
         if ( e.ChangedButton == MouseButton.Left )
         {
-            _lastDragPosition = GetScaledPosition( e );
+            _lastDragPosition = GetNormalizedPosition( e );
         }
     }
 
     protected void Canvas_PaintSurface( object sender, SKPaintSurfaceEventArgs e )
     {
-        _sceneManager.Paint( e.Surface.Canvas, new SKSizeI(e.Info.Width, e.Info.Height), new SKRectI( 0, 0, e.Info.Width, e.Info.Height ) );
+        _sceneManager.Paint( e.Surface.Canvas, new SKSizeI( e.Info.Width, e.Info.Height ), new SKRectI( 0, 0, e.Info.Width, e.Info.Height ) );
     }
 }
