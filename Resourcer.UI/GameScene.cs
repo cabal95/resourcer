@@ -8,23 +8,39 @@ namespace Resourcer;
 
 public class GameScene : LayoutScene
 {
-    public SKPointI Offset { get; set; } = SKPointI.Empty;
+    private readonly MapScene _mapScene;
+
+    public SKPointI Offset
+    {
+        get => _mapScene.Offset;
+        set => _mapScene.Offset = value;
+    }
 
     private readonly SpriteProvider _sprites;
 
     public GameScene( SpriteProvider sprites )
     {
+        _mapScene = new MapScene( sprites );
         _sprites = sprites;
+
+        Children.Add( _mapScene );
     }
 
     /// <inheritdoc/>
     public override void Draw( SKCanvas canvas )
     {
+        base.Draw( canvas );
+
         // Determine the X,Y map coordinates we will start painting from.
         var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
         var mapTop = ( int ) Math.Floor( Offset.Y / 64.0 );
-        var mapRight = ( int ) Math.Ceiling( ( Offset.X + Frame.Width ) / 64.0 );
-        var mapBottom = ( int ) Math.Ceiling( ( Offset.Y + Frame.Height ) / 64.0 );
+        var mapRight = ( int ) Math.Floor( ( Offset.X + Frame.Width ) / 64.0 );
+        var mapBottom = ( int ) Math.Floor( ( Offset.Y + Frame.Height ) / 64.0 );
+
+        if ( 10 < mapLeft || 10 > mapRight || 10 < mapTop || 10 > mapBottom )
+        {
+            return;
+        }
 
         // Determine the tile offset.
         var tileOffsetX = Offset.X % 64 != 0
@@ -38,52 +54,11 @@ public class GameScene : LayoutScene
         int left = Frame.Left - tileOffsetX;
         int top = Frame.Top - tileOffsetY;
 
-        for ( int y = top, mapY = mapTop; mapY < mapBottom; y += 64, mapY++ )
-        {
-            for ( int x = left, mapX = mapLeft; mapX < mapRight; x += 64, mapX++ )
-            {
-                if ( mapX >= 0 && mapX < 256 && mapY >= 0 && mapY < 256 )
-                {
-                    var destination = new SKRect( x, y, x + 64, y + 64 );
+        var x = left + ( ( 10 - mapLeft ) * 64 );
+        var y = top + ( ( 10 - mapTop ) * 64 );
 
-                    var biome = _sprites.Map[mapX, mapY];
+        var destination = new SKRect( x, y, x + 64, y + 64 );
 
-                    if ( biome == 'G' )
-                    {
-                        var tileX = Math.Abs( mapX ) % _sprites.GrassTiles.Count;
-                        _sprites.GrassTiles[tileX].Draw( canvas, destination );
-                    }
-                    else if ( biome == 'W' )
-                    {
-                        _sprites.WaterTiles[0].Draw( canvas, destination );
-                    }
-                    else if ( biome == 'T' )
-                    {
-                        _sprites.TundraTiles[0].Draw( canvas, destination );
-                    }
-                    else if ( biome == 'M' )
-                    {
-                        _sprites.MountainTiles[0].Draw( canvas, destination );
-                    }
-                    else if ( biome == 'D' )
-                    {
-                        _sprites.DesertTiles[0].Draw( canvas, destination );
-                    }
-                    else if ( biome == 'F' )
-                    {
-                        _sprites.ForestTiles[0].Draw( canvas, destination );
-                    }
-                    else
-                    {
-
-                    }
-
-                    if ( mapX == 10 && mapY == 10 )
-                    {
-                        _sprites.CharacterTile.Draw( canvas, destination );
-                    }
-                }
-            }
-        }
+        _sprites.CharacterTile.Draw( canvas, destination );
     }
 }
