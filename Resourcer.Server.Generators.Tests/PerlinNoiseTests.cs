@@ -1,3 +1,5 @@
+using OpenGameKit.Generators;
+
 namespace Resourcer.Server.Generators.Tests
 {
     /// <summary>

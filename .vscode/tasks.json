@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "dotnet",
+            "task": "build",
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "label": "Build Solution"
+        },
+        {
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "watch",
+                "--project",
+                "Resourcer\\Resourcer.csproj",
+                "--",
+                "build"
+            ],
+            "problemMatcher": [
+                {
+                    "base": "$msCompile",
+                    "background":
+                    {
+                        "beginsPattern": "^dotnet watch 🚀 Started$",
+                        "endsPattern": "^dotnet watch . Exited"
+                    }
+                }
+
+            ],
+            "isBackground": true,
+            "label": "Watch Resourcer"
+        }
+    ]
+}
