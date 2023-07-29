@@ -64,4 +64,5 @@ https://unity.com/how-to/beginner/game-development-terms Good description of var
 * https://opengameart.org/content/zelda-like-tilesets-and-sprites
 * https://opengameart.org/content/48-animated-old-school-rpg-characters-16x16
 * https://opengameart.org/content/tiny-characters-set
-* 
+
+https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/csharp-formatting-options for editorconfig reference.

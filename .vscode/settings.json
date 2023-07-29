@@ -1,3 +1,5 @@
 {
-    "dotnet.defaultSolution": "Resourcer.sln"
+    "dotnet.defaultSolution": "Resourcer.sln",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
 }
