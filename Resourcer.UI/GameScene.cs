@@ -1,4 +1,6 @@
-﻿using Resourcer.UI;
+﻿using OpenGameKit.Graphics;
+
+using Resourcer.UI;
 
 using SkiaSharp;
 
@@ -6,6 +8,12 @@ namespace Resourcer
 {
     public class GameScene : IScene
     {
+        /// <inheritdoc/>
+        public int Width { get; private set; }
+
+        /// <inheritdoc/>
+        public int Height { get; private set; }
+
         public SKPointI Offset { get; set; } = SKPointI.Empty;
 
         private readonly SpriteProvider _sprites;
@@ -16,7 +24,14 @@ namespace Resourcer
         }
 
         /// <inheritdoc/>
-        public void Draw( SKCanvas canvas, SKSizeI size, SKRectI dirtyRect )
+        public void SetSize( int width, int height )
+        {
+            Width = width;
+            Height = height;
+        }
+
+        /// <inheritdoc/>
+        public void Draw( SKCanvas canvas, SKRectI dirtyRect )
         {
             // Determine the X,Y map coordinates we will start painting from.
             var mapLeft = ( int ) Math.Floor( ( Offset.X + dirtyRect.Left ) / 64.0 );
