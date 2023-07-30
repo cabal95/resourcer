@@ -10,12 +10,10 @@ namespace OpenGameKit.Graphics;
 /// </summary>
 public class AnimatedSprite : ISprite
 {
-    private IFrameCounter _frameCounter;
-
     /// <summary>
-    /// The index of the sprite to display next.
+    /// The frame counter used to control our animation.
     /// </summary>
-    private int _index;
+    private readonly IFrameCounter _frameCounter;
 
     /// <summary>
     /// The sprites that make up the animation sequence.
