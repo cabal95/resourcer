@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+using OpenGameKit;
+using OpenGameKit.Abstractions;
+
 namespace Resourcer.UI;
 
 /// <summary>
@@ -14,5 +17,6 @@ public static class ServiceCollectionExtensions
     public static void UseResourcerUI( this ServiceCollection serviceCollection )
     {
         serviceCollection.AddSingleton<SpriteProvider>();
+        serviceCollection.AddSingleton<IFrameCounter, FrameCounter>();
     }
 }

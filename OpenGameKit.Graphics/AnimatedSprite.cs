@@ -1,4 +1,6 @@
-﻿using SkiaSharp;
+﻿using OpenGameKit.Abstractions;
+
+using SkiaSharp;
 
 namespace OpenGameKit.Graphics;
 
@@ -8,6 +10,8 @@ namespace OpenGameKit.Graphics;
 /// </summary>
 public class AnimatedSprite : ISprite
 {
+    private IFrameCounter _frameCounter;
+
     /// <summary>
     /// The index of the sprite to display next.
     /// </summary>
@@ -28,7 +32,7 @@ public class AnimatedSprite : ISprite
     /// Creates a new instance of <see cref="AnimatedSprite"/>.
     /// </summary>
     /// <param name="sprites">The sprites that comprise the animation sequence.</param>
-    public AnimatedSprite( params ISprite[] sprites )
+    public AnimatedSprite( IFrameCounter frameCounter, params ISprite[] sprites )
     {
         if ( sprites.Length == 0 )
         {
@@ -36,16 +40,14 @@ public class AnimatedSprite : ISprite
         }
 
         _sprites = sprites;
+        _frameCounter = frameCounter;
     }
 
     /// <inheritdoc/>
     public void Draw( SKCanvas canvas, SKRect destination )
     {
-        if ( _index >= _sprites.Length )
-        {
-            _index = 0;
-        }
+        var index = ( _frameCounter.Frame / 15 ) % _sprites.Length;
 
-        _sprites[_index++].Draw( canvas, destination );
+        _sprites[index].Draw( canvas, destination );
     }
 }

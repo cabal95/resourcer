@@ -25,7 +25,7 @@ public class SceneManager
         {
             while ( true )
             {
-                await Task.Delay( ( int ) ( 1_000 / 60.0 ) );
+                await Task.Delay( TimeSpan.FromMilliseconds( 1_000.0 / 60.0 ) );
 
                 _platform.UpdateCanvas();
             }
@@ -40,7 +40,7 @@ public class SceneManager
         }
 
         canvas.Save();
-        canvas.ClipRect(_currentScene.Frame);
+        canvas.ClipRect( _currentScene.Frame );
         _currentScene.Draw( canvas );
         canvas.Restore();
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+using OpenGameKit.Abstractions;
 using OpenGameKit.Generators;
 using OpenGameKit.Generators.Abstractions;
 using OpenGameKit.Graphics;
@@ -53,7 +54,7 @@ public class SpriteProvider
     /// <summary>
     /// Creates a new instance of <see cref="SpriteProvider"/>.
     /// </summary>
-    public SpriteProvider()
+    public SpriteProvider( IFrameCounter frameCounter )
     {
         using ( var stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.overworld.png" ) )
         {
@@ -114,6 +115,7 @@ public class SpriteProvider
             var character = new UnstructuredTileSet( stream );
 
             CharacterTile = new AnimatedSprite(
+                frameCounter,
                 character.GetTileAt( 0, 1, 16, 16 ),
                 character.GetTileAt( 0, 18, 16, 16 ),
                 character.GetTileAt( 0, 1, 16, 16 ),
