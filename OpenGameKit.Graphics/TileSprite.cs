@@ -1,4 +1,6 @@
-﻿using SkiaSharp;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using SkiaSharp;
 
 namespace OpenGameKit.Graphics;
 
@@ -38,8 +40,8 @@ public class TileSprite : ITile
     }
 
     /// <inheritdoc/>
-    public void Draw( SKCanvas canvas, SKRect destination )
+    public void Draw( IDrawOperation operation, SKRect destination )
     {
-        _tileSet.DrawTile( this, canvas, destination );
+        _tileSet.DrawTile( this, operation.GetRequiredService<SKCanvas>(), destination );
     }
 }

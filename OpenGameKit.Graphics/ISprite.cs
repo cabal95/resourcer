@@ -20,7 +20,7 @@ public interface ISprite
     /// <summary>
     /// Draws the object onto the canvas inside the destination rectangle.
     /// </summary>
-    /// <param name="canvas">The canvas surface this instance will be painted on.</param>
+    /// <param name="operation">The current drawing operation.</param>
     /// <param name="destination">The rectangle on the surface that should be filled with this instance.</param>
-    void Draw( SKCanvas canvas, SKRect destination );
+    void Draw( IDrawOperation operation, SKRect destination );
 }

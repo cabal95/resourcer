@@ -41,7 +41,7 @@ public class SceneManager
 
         canvas.Save();
         canvas.ClipRect( _currentScene.Frame );
-        _currentScene.Draw( canvas );
+        _currentScene.Draw( new DrawOperation( canvas, _serviceProvider ) );
         canvas.Restore();
     }
 

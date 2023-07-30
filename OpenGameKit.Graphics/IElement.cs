@@ -8,7 +8,7 @@ namespace OpenGameKit.Graphics;
 public interface IElement
 {
     /// <summary>
-    /// The current position and size of the scene.
+    /// The current position and size of the element.
     /// </summary>
     SKRectI Frame { get; set; }
 
@@ -23,8 +23,8 @@ public interface IElement
     SKSizeI GetDesiredSize( int widthConstraint, int heightConstraint );
 
     /// <summary>
-    /// Draws the scene.
+    /// Draws the element.
     /// </summary>
-    /// <param name="canvas">The canvas object that the scene will be drawn onto.</param>
-    void Draw( SKCanvas canvas );
+    /// <param name="operation">The current drawing operation.</param>
+    void Draw( IDrawOperation operation );
 }

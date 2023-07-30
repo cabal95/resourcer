@@ -34,11 +34,11 @@ public class LayeredSprite : ISprite
     }
 
     /// <inheritdoc/>
-    public void Draw( SKCanvas canvas, SKRect destination )
+    public void Draw( IDrawOperation operation, SKRect destination )
     {
         for ( int i = 0; i < _sprites.Length; i++ )
         {
-            _sprites[i].Draw( canvas, destination );
+            _sprites[i].Draw( operation, destination );
         }
     }
 }

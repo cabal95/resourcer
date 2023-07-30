@@ -33,9 +33,12 @@ public class GameScene : Scene
     }
 
     /// <inheritdoc/>
-    public override void Draw( SKCanvas canvas )
+    public override void Draw( IDrawOperation operation )
     {
-        base.Draw( canvas );
+        base.Draw( operation );
+
+        var posX = 12;
+        var posY = 12;
 
         // Determine the X,Y map coordinates we will start painting from.
         var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
@@ -43,7 +46,7 @@ public class GameScene : Scene
         var mapRight = ( int ) Math.Floor( ( Offset.X + Frame.Width ) / 64.0 );
         var mapBottom = ( int ) Math.Floor( ( Offset.Y + Frame.Height ) / 64.0 );
 
-        if ( 10 < mapLeft || 10 > mapRight || 10 < mapTop || 10 > mapBottom )
+        if ( posX < mapLeft || posX > mapRight || posY < mapTop || posY > mapBottom )
         {
             return;
         }
@@ -60,11 +63,11 @@ public class GameScene : Scene
         int left = Frame.Left - tileOffsetX;
         int top = Frame.Top - tileOffsetY;
 
-        var x = left + ( ( 10 - mapLeft ) * 64 );
-        var y = top + ( ( 10 - mapTop ) * 64 );
+        var x = left + ( ( posX - mapLeft ) * 64 );
+        var y = top + ( ( posY - mapTop ) * 64 );
 
-        var destination = new SKRect( x, y, x + 64, y + 64 );
+        var destination = new SKRect( x + 8, y + 8, x + 48, y + 48 );
 
-        _sprites.CharacterTile.Draw( canvas, destination );
+        _sprites.CharacterTile.Draw( operation, destination );
     }
 }

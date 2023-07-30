@@ -17,5 +17,5 @@ public abstract class Element : IElement
     }
 
     /// <inheritdoc/>
-    public abstract void Draw( SKCanvas canvas );
+    public abstract void Draw( IDrawOperation operation );
 }

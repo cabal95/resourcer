@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using SkiaSharp;
 
 namespace OpenGameKit.Graphics;
@@ -82,15 +84,19 @@ public class Scene : IScene
     }
 
     /// <inheritdoc/>
-    public virtual void Draw( SKCanvas canvas )
+    public virtual void Draw( IDrawOperation operation )
     {
         UpdateLayoutIfRequested();
-        
+
+        var canvas = operation.GetRequiredService<SKCanvas>();
+
         foreach ( var child in Children )
         {
             canvas.Save();
             canvas.ClipRect( child.Frame );
-            child.Draw( canvas );
+
+            child.Draw( operation );
+
             canvas.Restore();
         }
     }

@@ -41,7 +41,7 @@ public class MapScene : Element
     }
 
     /// <inheritdoc/>
-    public override void Draw( SKCanvas canvas )
+    public override void Draw( IDrawOperation operation )
     {
         // Determine the X,Y map coordinates we will start painting from.
         var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
@@ -74,27 +74,27 @@ public class MapScene : Element
                     if ( biome == 'G' )
                     {
                         var tileX = Math.Abs( mapX ) * Math.Abs( mapY ) % _sprites.GrassTiles.Count;
-                        _sprites.GrassTiles[tileX].Draw( canvas, destination );
+                        _sprites.GrassTiles[tileX].Draw( operation, destination );
                     }
                     else if ( biome == 'W' )
                     {
-                        _sprites.WaterTiles[0].Draw( canvas, destination );
+                        _sprites.WaterTiles[0].Draw( operation, destination );
                     }
                     else if ( biome == 'T' )
                     {
-                        _sprites.TundraTiles[0].Draw( canvas, destination );
+                        _sprites.TundraTiles[0].Draw( operation, destination );
                     }
                     else if ( biome == 'M' )
                     {
-                        _sprites.MountainTiles[0].Draw( canvas, destination );
+                        _sprites.MountainTiles[0].Draw( operation, destination );
                     }
                     else if ( biome == 'D' )
                     {
-                        _sprites.DesertTiles[0].Draw( canvas, destination );
+                        _sprites.DesertTiles[0].Draw( operation, destination );
                     }
                     else if ( biome == 'F' )
                     {
-                        _sprites.ForestTiles[0].Draw( canvas, destination );
+                        _sprites.ForestTiles[0].Draw( operation, destination );
                     }
                 }
             }
