@@ -14,6 +14,8 @@ public class SceneManager
 
     private readonly IServiceProvider _serviceProvider;
 
+    private readonly Timer _timer;
+
     public SceneManager( IServiceProvider serviceProvider, IPlatform platform )
     {
         _serviceProvider = serviceProvider;
@@ -21,15 +23,10 @@ public class SceneManager
 
         _currentScene = ActivatorUtilities.GetServiceOrCreateInstance<GameScene>( _serviceProvider );
 
-        Task.Run( async () =>
+        _timer = new Timer( state =>
         {
-            while ( true )
-            {
-                await Task.Delay( TimeSpan.FromMilliseconds( 1_000.0 / 60.0 ) );
-
-                _platform.UpdateCanvas();
-            }
-        } );
+            _platform.UpdateCanvas();
+        }, null, TimeSpan.FromMilliseconds( 1000 / 60.0 ), TimeSpan.FromMilliseconds( 1000 / 60.0 ) );
     }
 
     public void Paint( SKCanvas canvas, SKSizeI size, SKRectI dirtyRect )
@@ -50,7 +47,7 @@ public class SceneManager
         if ( _currentScene is GameScene gameScene )
         {
             gameScene.Offset = new SKPointI( gameScene.Offset.X - amount.X, gameScene.Offset.Y - amount.Y );
-            _platform.UpdateCanvas();
+            // _platform.UpdateCanvas();
         }
     }
 }

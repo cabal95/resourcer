@@ -47,6 +47,13 @@ public class Platform : IPlatform
     /// <inheritdoc/>
     public void UpdateCanvas()
     {
-        _canvas.Dispatcher.Invoke( () => _canvas.InvalidateVisual(), System.Windows.Threading.DispatcherPriority.Render );
+        try
+        {
+            _canvas.Dispatcher.Invoke( () => _canvas.InvalidateVisual(), System.Windows.Threading.DispatcherPriority.Render );
+        }
+        catch ( TaskCanceledException )
+        {
+            // Intentionally ignored, this happens during normal application shutdown.
+        }
     }
 }
