@@ -1,30 +1,18 @@
-using SkiaSharp;
-
 namespace OpenGameKit.Graphics;
 
 /// <summary>
-/// A scene describes and paints the UI for a section of the game.
+/// A scene describes and handles layout for a group of UI elements.
 /// </summary>
-public interface IScene
+public interface IScene : IElement
 {
     /// <summary>
-    /// The current position and size of the scene.
+    /// The child elements that make up this scene.
     /// </summary>
-    SKRectI Frame { get; set; }
+    IList<IElement> Children { get; }
 
     /// <summary>
-    /// Calculates and returns the desired size of the element given the width
-    /// height constraints. It is not guaranteed that the return value will
-    /// be used for the element frame.
+    /// Requests that the layout of the scene be updated before the next render
+    /// cycle is performed.
     /// </summary>
-    /// <param name="widthConstraint">The maximum number of pixels wide the element can be.</param>
-    /// <param name="heightConstraint">The maximum number of pixels high the element can be.</param>
-    /// <returns>The size that the element is requesting.</returns>
-    SKSizeI GetDesiredSize( int widthConstraint, int heightConstraint );
-
-    /// <summary>
-    /// Draws the scene.
-    /// </summary>
-    /// <param name="canvas">The canvas object that the scene will be drawn onto.</param>
-    void Draw( SKCanvas canvas );
+    void RequestLayout();
 }

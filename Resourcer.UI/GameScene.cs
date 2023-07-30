@@ -6,7 +6,7 @@ using SkiaSharp;
 
 namespace Resourcer;
 
-public class GameScene : LayoutScene
+public class GameScene : Scene
 {
     private readonly MapScene _mapScene;
 
@@ -24,6 +24,12 @@ public class GameScene : LayoutScene
         _sprites = sprites;
 
         Children.Add( _mapScene );
+    }
+
+    /// <inheritdoc/>
+    protected override void Layout()
+    {
+        _mapScene.Frame = SKRectI.Create( 0, 0, Frame.Width, Frame.Height );
     }
 
     /// <inheritdoc/>

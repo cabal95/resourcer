@@ -9,7 +9,7 @@ namespace Resourcer;
 /// <summary>
 /// A simple scene that draws the map tile background of the game.
 /// </summary>
-public class MapScene : IScene
+public class MapScene : Element
 {
     #region Fields
 
@@ -21,9 +21,6 @@ public class MapScene : IScene
     #endregion
 
     #region Properties
-
-    /// <inheritdoc/>
-    public SKRectI Frame { get; set; }
 
     /// <summary>
     /// A representation of the raw pixel position of the top left corner of
@@ -44,13 +41,7 @@ public class MapScene : IScene
     }
 
     /// <inheritdoc/>
-    public SKSizeI GetDesiredSize( int widthConstraint, int heightConstraint )
-    {
-        return new SKSizeI( widthConstraint, heightConstraint );
-    }
-
-    /// <inheritdoc/>
-    public void Draw( SKCanvas canvas )
+    public override void Draw( SKCanvas canvas )
     {
         // Determine the X,Y map coordinates we will start painting from.
         var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
