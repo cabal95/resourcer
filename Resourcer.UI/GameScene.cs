@@ -43,31 +43,27 @@ public class GameScene : Scene
     {
         base.Draw( operation );
 
-        var posX = 12;
-        var posY = 12;
-
         // Determine the X,Y map coordinates we will start painting from.
         var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
         var mapTop = ( int ) Math.Floor( Offset.Y / 64.0 );
         var mapRight = ( int ) Math.Floor( ( Offset.X + Frame.Width ) / 64.0 );
         var mapBottom = ( int ) Math.Floor( ( Offset.Y + Frame.Height ) / 64.0 );
 
-        if ( posX >= mapLeft && posX <= mapRight && posY >= mapTop && posY <= mapBottom )
+        // Determine the drawing offsets.
+        var drawingOffsetX = ( mapLeft * 64 ) - Offset.X;
+        var drawingOffsetY = ( mapTop * 64 ) - Offset.Y;
+
+        var characterPosX = 12;
+        var characterPosY = 12;
+
+        if ( characterPosX >= mapLeft && characterPosX <= mapRight && characterPosY >= mapTop && characterPosY <= mapBottom )
         {
-            // Determine the tile offset.
-            var tileOffsetX = Offset.X % 64 != 0
-                ? Offset.X < 0 ? 64 + ( Offset.X % 64 ) : Offset.X % 64
-                : 0;
-            var tileOffsetY = Offset.Y % 64 != 0
-                ? Offset.Y < 0 ? 64 + ( Offset.Y % 64 ) : Offset.Y % 64
-                : 0;
-
             // Determine the starting painting position.
-            int left = Frame.Left - tileOffsetX;
-            int top = Frame.Top - tileOffsetY;
+            int left = Frame.Left + drawingOffsetX;
+            int top = Frame.Top + drawingOffsetY;
 
-            var x = left + ( ( posX - mapLeft ) * 64 );
-            var y = top + ( ( posY - mapTop ) * 64 );
+            var x = left + ( ( characterPosX - mapLeft ) * 64 );
+            var y = top + ( ( characterPosY - mapTop ) * 64 );
 
             var destination = new SKRect( x + 8, y + 8, x + 48, y + 48 );
 
