@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OpenGameKit.Generators\OpenGameKit.Generators.csproj" />
+    <ProjectReference Include="..\OpenGameKit.Graphics.SkiaSharp\OpenGameKit.Graphics.SkiaSharp.csproj" />
     <ProjectReference Include="..\OpenGameKit.Graphics\OpenGameKit.Graphics.csproj" />
     <ProjectReference Include="..\Resourcer.Server.Generators\Resourcer.Server.Generators.csproj" />
   </ItemGroup>

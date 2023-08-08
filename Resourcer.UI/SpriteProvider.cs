@@ -53,7 +53,7 @@ public class SpriteProvider
     /// <summary>
     /// Creates a new instance of <see cref="SpriteProvider"/>.
     /// </summary>
-    public SpriteProvider()
+    public SpriteProvider( ITextureProvider textureProvider )
     {
         using ( var stream = GetType().Assembly.GetManifestResourceStream( "Resourcer.UI.Resources.Embedded.overworld.png" ) )
         {
@@ -62,7 +62,7 @@ public class SpriteProvider
                 throw new Exception( "World tile set not found." );
             }
 
-            var overworld = new GridTextureSheet( new PlatformTileSet( stream ), 16, 16 );
+            var overworld = new GridTextureSheet( textureProvider.LoadTextureSheet( stream ), 16, 16 );
 
             GrassTiles = new[]
             {
@@ -111,7 +111,7 @@ public class SpriteProvider
                 throw new Exception( "Character tile set not found." );
             }
 
-            var character = new PlatformTileSet( stream );
+            var character = textureProvider.LoadTextureSheet( stream );
 
             CharacterTile = new AnimatedTexture(
                 character.GetTextureAt( 0, 1, 16, 16 ),

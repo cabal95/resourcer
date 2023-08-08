@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 
 using OpenGameKit.Abstractions;
+using OpenGameKit.Graphics.SkiaSharp;
 
 using SkiaSharp;
 
@@ -9,32 +10,32 @@ namespace OpenGameKit.Graphics;
 /// <summary>
 /// A canvas that supports drawing operations to SkiaSharp.
 /// </summary>
-public class PlatformCanvas : ICanvas
+public class SkiaSharpCanvas : ICanvas
 {
     /// <summary>
-    /// The native canvas objec.t
+    /// The native canvas object.
     /// </summary>
     private readonly SKCanvas _canvas;
 
     /// <summary>
-    /// Creates a new instance of <see cref="PlatformCanvas"/>.
+    /// Creates a new instance of <see cref="SkiaSharpCanvas"/>.
     /// </summary>
     /// <param name="canvas">The native SkiaSharp canvas.</param>
-    public PlatformCanvas( SKCanvas canvas )
+    public SkiaSharpCanvas( SKCanvas canvas )
     {
         _canvas = canvas;
     }
 
     /// <inheritdoc/>
-    public void DrawSprite( ITexture sprite, Rectangle destination )
+    public void DrawTexture( ITexture texture, Rectangle destination )
     {
-        if ( sprite is not PlatformSprite platformSprite )
+        if ( texture is not PlatformTexture platformTexture )
         {
-            throw new ArgumentException( $"{nameof( DrawSprite )} must be called with a PlatformSprite.", nameof( sprite ) );
+            throw new ArgumentException( $"{nameof( DrawTexture )} must be called with a ${nameof( PlatformTexture )}.", nameof( texture ) );
         }
 
         var skiaDestination = new SKRect( destination.Left, destination.Top, destination.Right, destination.Bottom );
 
-        _canvas.DrawBitmap( platformSprite.Bitmap, platformSprite.SourceRect, skiaDestination );
+        _canvas.DrawBitmap( platformTexture.Bitmap, platformTexture.SourceRect, skiaDestination );
     }
 }

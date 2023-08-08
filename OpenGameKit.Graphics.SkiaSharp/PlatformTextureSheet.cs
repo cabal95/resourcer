@@ -4,13 +4,13 @@ using OpenGameKit.Abstractions;
 
 using SkiaSharp;
 
-namespace OpenGameKit.Graphics;
+namespace OpenGameKit.Graphics.SkiaSharp;
 
 /// <summary>
-/// A tile set that has no defined structure. Tiles are accessed by specific
+/// A texture set that has no defined structure. Textures are accessed by specific
 /// coordinates and sizes.
 /// </summary>
-public class PlatformTileSet : ITextureSheet
+internal class PlatformTextureSheet : ITextureSheet
 {
     /// <summary>
     /// The source bitmap data.
@@ -18,11 +18,11 @@ public class PlatformTileSet : ITextureSheet
     private readonly SKBitmap _source;
 
     /// <summary>
-    /// Creates a new instance of <see cref="PlatformTileSet"/> from the
+    /// Creates a new instance of <see cref="PlatformTextureSheet"/> from the
     /// image represented by <paramref name="stream"/>.
     /// </summary>
     /// <param name="stream">A stream that contains the raw image data.</param>
-    public PlatformTileSet( Stream stream )
+    public PlatformTextureSheet( Stream stream )
     {
         _source = SKBitmap.Decode( stream );
         _source.SetImmutable();
@@ -53,6 +53,6 @@ public class PlatformTileSet : ITextureSheet
 
         var rect = new Rectangle( x, y, width, height );
 
-        return new PlatformSprite( _source, rect );
+        return new PlatformTexture( _source, rect );
     }
 }

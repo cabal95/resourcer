@@ -2,6 +2,7 @@
 
 using OpenGameKit;
 using OpenGameKit.Abstractions;
+using OpenGameKit.Graphics;
 
 namespace Resourcer.UI;
 
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtensions
     /// <param name="serviceCollection">The collection of services to register dependencies into.</param>
     public static void UseResourcerUI( this ServiceCollection serviceCollection )
     {
+        serviceCollection.UseSkiaSharpRendering();
         serviceCollection.AddSingleton<SpriteProvider>();
         serviceCollection.AddSingleton<IFrameCounter, FrameCounter>();
     }

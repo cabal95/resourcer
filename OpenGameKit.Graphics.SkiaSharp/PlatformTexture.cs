@@ -4,12 +4,12 @@ using OpenGameKit.Abstractions;
 
 using SkiaSharp;
 
-namespace OpenGameKit.Graphics;
+namespace OpenGameKit.Graphics.SkiaSharp;
 
 /// <summary>
-/// A sprite that is sourced from the SkiaSharp library.
+/// A texture that is sourced from the SkiaSharp library.
 /// </summary>
-internal class PlatformSprite : ITexture
+internal class PlatformTexture : ITexture
 {
     /// <inheritdoc/>
     public int Width { get; }
@@ -24,16 +24,16 @@ internal class PlatformSprite : ITexture
 
     /// <summary>
     /// The rectangle in <see cref="Bitmap"/> that contains the pixel data for
-    /// this sprite.
+    /// this texture.
     /// </summary>
     internal SKRect SourceRect { get; }
 
     /// <summary>
-    /// Creates a new instance of <see cref="PlatformSprite"/>.
+    /// Creates a new instance of <see cref="PlatformTexture"/>.
     /// </summary>
     /// <param name="bitmap">The raw bitmap that contains the pixel data.</param>
-    /// <param name="source">The rectangle in the bitmap that contains the pixel data for this sprite.</param>
-    public PlatformSprite( SKBitmap bitmap, Rectangle source )
+    /// <param name="source">The rectangle in the bitmap that contains the pixel data for this texture.</param>
+    public PlatformTexture( SKBitmap bitmap, Rectangle source )
     {
         Bitmap = bitmap;
         Width = source.Width;
@@ -44,6 +44,6 @@ internal class PlatformSprite : ITexture
     /// <inheritdoc/>
     public virtual void Draw( IDrawOperation operation, Rectangle destination )
     {
-        operation.Canvas.DrawSprite( this, destination );
+        operation.Canvas.DrawTexture( this, destination );
     }
 }
