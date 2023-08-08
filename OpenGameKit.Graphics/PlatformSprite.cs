@@ -9,7 +9,7 @@ namespace OpenGameKit.Graphics;
 /// <summary>
 /// A sprite that is sourced from the SkiaSharp library.
 /// </summary>
-internal class PlatformSprite : ISprite
+internal class PlatformSprite : ITexture
 {
     /// <inheritdoc/>
     public int Width { get; }

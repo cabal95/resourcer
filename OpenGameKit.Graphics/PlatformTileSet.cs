@@ -10,7 +10,7 @@ namespace OpenGameKit.Graphics;
 /// A tile set that has no defined structure. Tiles are accessed by specific
 /// coordinates and sizes.
 /// </summary>
-public class PlatformTileSet : ITileSet
+public class PlatformTileSet : ITextureSheet
 {
     /// <summary>
     /// The source bitmap data.
@@ -29,7 +29,7 @@ public class PlatformTileSet : ITileSet
     }
 
     /// <inheritdoc/>
-    public ISprite GetSpriteAt( int x, int y, int width, int height )
+    public ITexture GetTextureAt( int x, int y, int width, int height )
     {
         if ( x < 0 || x + width > _source.Width )
         {

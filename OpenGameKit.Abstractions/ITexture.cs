@@ -5,15 +5,15 @@ namespace OpenGameKit.Abstractions;
 /// <summary>
 /// An object that can be drawn onto a canvas.
 /// </summary>
-public interface ISprite
+public interface ITexture
 {
     /// <summary>
-    /// The native width of the sprite.
+    /// The native width of the texture.
     /// </summary>
     int Width { get; }
 
     /// <summary>
-    /// The native height of the sprite.
+    /// The native height of the texture.
     /// </summary>
     int Height { get; }
 

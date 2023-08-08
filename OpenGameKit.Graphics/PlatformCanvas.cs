@@ -26,7 +26,7 @@ public class PlatformCanvas : ICanvas
     }
 
     /// <inheritdoc/>
-    public void DrawSprite( ISprite sprite, Rectangle destination )
+    public void DrawSprite( ITexture sprite, Rectangle destination )
     {
         if ( sprite is not PlatformSprite platformSprite )
         {

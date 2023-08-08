@@ -16,37 +16,37 @@ public class SpriteProvider
     /// <summary>
     /// The set of tiles that will be used to draw grass.
     /// </summary>
-    public IReadOnlyList<ISprite> GrassTiles { get; }
+    public IReadOnlyList<ITexture> GrassTiles { get; }
 
     /// <summary>
     /// The set of tiles that will be used to draw water.
     /// </summary>
-    public IReadOnlyList<ISprite> WaterTiles { get; }
+    public IReadOnlyList<ITexture> WaterTiles { get; }
 
     /// <summary>
     /// The set of tiles that will be used to draw tundra.
     /// </summary>
-    public IReadOnlyList<ISprite> TundraTiles { get; }
+    public IReadOnlyList<ITexture> TundraTiles { get; }
 
     /// <summary>
     /// The set of tiles that will be used to draw mountain.
     /// </summary>
-    public IReadOnlyList<ISprite> MountainTiles { get; }
+    public IReadOnlyList<ITexture> MountainTiles { get; }
 
     /// <summary>
     /// The set of tiles that will be used to draw desert.
     /// </summary>
-    public IReadOnlyList<ISprite> DesertTiles { get; }
+    public IReadOnlyList<ITexture> DesertTiles { get; }
 
     /// <summary>
     /// the set of tiles that will be used to draw forest.
     /// </summary>
-    public IReadOnlyList<ISprite> ForestTiles { get; }
+    public IReadOnlyList<ITexture> ForestTiles { get; }
 
     /// <summary>
     /// The sprite that will be used to draw the character.
     /// </summary>
-    public ISprite CharacterTile { get; }
+    public ITexture CharacterTile { get; }
 
     public readonly byte[,] Map;
 
@@ -62,45 +62,45 @@ public class SpriteProvider
                 throw new Exception( "World tile set not found." );
             }
 
-            var overworld = new GridTileSet( new PlatformTileSet( stream ), 16, 16 );
+            var overworld = new GridTextureSheet( new PlatformTileSet( stream ), 16, 16 );
 
             GrassTiles = new[]
             {
-                overworld.GetSpriteAt( 0, 0 ),
-                overworld.GetSpriteAt( 7, 9 ),
-                overworld.GetSpriteAt( 8, 9 ),
-                overworld.GetSpriteAt( 7, 10 ),
-                overworld.GetSpriteAt( 8, 10 )
+                overworld.GetTextureAt( 0, 0 ),
+                overworld.GetTextureAt( 7, 9 ),
+                overworld.GetTextureAt( 8, 9 ),
+                overworld.GetTextureAt( 7, 10 ),
+                overworld.GetTextureAt( 8, 10 )
             };
 
             WaterTiles = new[]
             {
-                overworld.GetSpriteAt( 0, 1 ),
-                overworld.GetSpriteAt( 1, 1 ),
-                overworld.GetSpriteAt( 2, 1 ),
-                overworld.GetSpriteAt( 3, 1 ),
-                overworld.GetSpriteAt( 0, 2 ),
-                overworld.GetSpriteAt( 1, 2 ),
-                overworld.GetSpriteAt( 2, 2 ),
-                overworld.GetSpriteAt( 3, 2 )
+                overworld.GetTextureAt( 0, 1 ),
+                overworld.GetTextureAt( 1, 1 ),
+                overworld.GetTextureAt( 2, 1 ),
+                overworld.GetTextureAt( 3, 1 ),
+                overworld.GetTextureAt( 0, 2 ),
+                overworld.GetTextureAt( 1, 2 ),
+                overworld.GetTextureAt( 2, 2 ),
+                overworld.GetTextureAt( 3, 2 )
             };
 
             TundraTiles = new[]
             {
-                overworld.GetSpriteAt( 14, 11 ),
-                overworld.GetSpriteAt( 14, 12 )
+                overworld.GetTextureAt( 14, 11 ),
+                overworld.GetTextureAt( 14, 12 )
             };
 
             MountainTiles = new[]
             {
-                new LayeredSprite( overworld.GetSpriteAt( 0, 0 ), overworld.GetSpriteAt( 7, 5 ) )
+                new LayeredTexture( overworld.GetTextureAt( 0, 0 ), overworld.GetTextureAt( 7, 5 ) )
             };
 
-            DesertTiles = new[] { overworld.GetSpriteAt( 2, 32 ) };
+            DesertTiles = new[] { overworld.GetTextureAt( 2, 32 ) };
 
             ForestTiles = new[]
             {
-                new LayeredSprite( overworld.GetSpriteAt( 0, 0 ), overworld.GetSpriteAt( 2, 14 ) )
+                new LayeredTexture( overworld.GetTextureAt( 0, 0 ), overworld.GetTextureAt( 2, 14 ) )
             };
         }
 
@@ -113,11 +113,11 @@ public class SpriteProvider
 
             var character = new PlatformTileSet( stream );
 
-            CharacterTile = new AnimatedSprite(
-                character.GetSpriteAt( 0, 1, 16, 16 ),
-                character.GetSpriteAt( 0, 18, 16, 16 ),
-                character.GetSpriteAt( 0, 1, 16, 16 ),
-                character.GetSpriteAt( 0, 35, 16, 16 ) );
+            CharacterTile = new AnimatedTexture(
+                character.GetTextureAt( 0, 1, 16, 16 ),
+                character.GetTextureAt( 0, 18, 16, 16 ),
+                character.GetTextureAt( 0, 1, 16, 16 ),
+                character.GetTextureAt( 0, 35, 16, 16 ) );
         }
 
         var serviceCollection = new ServiceCollection();

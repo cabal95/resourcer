@@ -13,5 +13,5 @@ public interface ICanvas
     /// </summary>
     /// <param name="sprite">The sprite to be drawn.</param>
     /// <param name="destination">The rectangle to draw the sprite into.</param>
-    void DrawSprite( ISprite sprite, Rectangle destination );
+    void DrawSprite( ITexture sprite, Rectangle destination );
 }
