@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Drawing;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using OpenGameKit.Abstractions;
 using OpenGameKit.Graphics;
 
 using SkiaSharp;
@@ -31,13 +34,13 @@ public class SceneManager
 
     public void Paint( SKCanvas canvas, SKSizeI size, SKRectI dirtyRect )
     {
-        if ( _currentScene.Frame.Size != size )
+        if ( _currentScene.Frame.Width != size.Width || _currentScene.Frame.Height != size.Height )
         {
-            _currentScene.Frame = SKRectI.Create( _currentScene.Frame.Location, size );
+            _currentScene.Frame = new Rectangle( _currentScene.Frame.Location, new Size( size.Width, size.Height ) );
         }
 
         canvas.Save();
-        canvas.ClipRect( _currentScene.Frame );
+        canvas.ClipRect( new SKRect( _currentScene.Frame.Left, _currentScene.Frame.Top, _currentScene.Frame.Right, _currentScene.Frame.Bottom ) );
         _currentScene.Draw( new DrawOperation( new PlatformCanvas( canvas ), _serviceProvider ) );
         canvas.Restore();
     }

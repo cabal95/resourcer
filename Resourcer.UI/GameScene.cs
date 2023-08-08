@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 
+using OpenGameKit.Abstractions;
 using OpenGameKit.Graphics;
 
 using Resourcer.UI;
@@ -37,7 +38,7 @@ public class GameScene : Scene
     /// <inheritdoc/>
     protected override void Layout()
     {
-        _mapScene.Frame = SKRectI.Create( 0, 0, Frame.Width, Frame.Height );
+        _mapScene.Frame = new Rectangle( 0, 0, Frame.Width, Frame.Height );
     }
 
     /// <inheritdoc/>

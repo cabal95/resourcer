@@ -1,4 +1,4 @@
-namespace OpenGameKit.Graphics;
+namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// A scene describes and handles layout for a group of UI elements.

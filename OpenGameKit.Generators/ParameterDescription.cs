@@ -1,4 +1,4 @@
-﻿using OpenGameKit.Generators.Abstractions;
+﻿using OpenGameKit.Abstractions;
 
 namespace OpenGameKit.Generators
 {

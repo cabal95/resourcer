@@ -1,4 +1,4 @@
-﻿namespace OpenGameKit.Graphics;
+﻿namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// Represents a single tile from a <see cref="ITileSet"/>.

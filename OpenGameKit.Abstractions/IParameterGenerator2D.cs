@@ -1,4 +1,4 @@
-﻿namespace OpenGameKit.Generators.Abstractions;
+﻿namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// A single parameter generator for a 2D coordinate plane. Uses the set of

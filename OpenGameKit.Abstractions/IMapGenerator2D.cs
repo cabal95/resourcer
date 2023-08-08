@@ -1,4 +1,4 @@
-﻿namespace OpenGameKit.Generators.Abstractions;
+﻿namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// Generates a map of the given cell types in 2D coordinate space.

@@ -1,4 +1,4 @@
-﻿namespace OpenGameKit.Generators.Abstractions;
+﻿namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// Provides a map cell given the randomized parameter values.

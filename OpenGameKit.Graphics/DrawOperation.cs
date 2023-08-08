@@ -1,4 +1,4 @@
-using SkiaSharp;
+using OpenGameKit.Abstractions;
 
 namespace OpenGameKit.Graphics;
 

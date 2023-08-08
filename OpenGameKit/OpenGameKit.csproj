@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpenGameKit.Abstractions\OpenGameKit.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

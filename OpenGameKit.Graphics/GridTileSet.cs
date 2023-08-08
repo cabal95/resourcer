@@ -1,4 +1,6 @@
-﻿namespace OpenGameKit.Graphics;
+﻿using OpenGameKit.Abstractions;
+
+namespace OpenGameKit.Graphics;
 
 /// <summary>
 /// A tile set that is layed out in a grid of equally sized tiles.

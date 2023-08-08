@@ -1,4 +1,4 @@
-﻿namespace OpenGameKit.Generators.Abstractions;
+﻿namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// A map generator that uses parameterized descriptions to generate a set of

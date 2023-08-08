@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 
+using OpenGameKit.Abstractions;
+
 using SkiaSharp;
 
 namespace OpenGameKit.Graphics;
@@ -10,10 +12,10 @@ namespace OpenGameKit.Graphics;
 internal class PlatformSprite : ISprite
 {
     /// <inheritdoc/>
-    public int Width => throw new NotImplementedException();
+    public int Width { get; }
 
     /// <inheritdoc/>
-    public int Height => throw new NotImplementedException();
+    public int Height { get; }
 
     /// <summary>
     /// The source bitmap that contains the pixel data.
@@ -34,6 +36,8 @@ internal class PlatformSprite : ISprite
     public PlatformSprite( SKBitmap bitmap, Rectangle source )
     {
         Bitmap = bitmap;
+        Width = source.Width;
+        Height = source.Height;
         SourceRect = new SKRect( source.Left, source.Top, source.Right, source.Bottom );
     }
 

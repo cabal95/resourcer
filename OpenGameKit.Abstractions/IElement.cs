@@ -1,6 +1,6 @@
-using SkiaSharp;
+using System.Drawing;
 
-namespace OpenGameKit.Graphics;
+namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// An element describes and paints a single UI element.
@@ -10,7 +10,7 @@ public interface IElement
     /// <summary>
     /// The current position and size of the element.
     /// </summary>
-    SKRectI Frame { get; set; }
+    Rectangle Frame { get; set; }
 
     /// <summary>
     /// Calculates and returns the desired size of the element given the width
@@ -20,7 +20,7 @@ public interface IElement
     /// <param name="widthConstraint">The maximum number of pixels wide the element can be.</param>
     /// <param name="heightConstraint">The maximum number of pixels high the element can be.</param>
     /// <returns>The size that the element is requesting.</returns>
-    SKSizeI GetDesiredSize( int widthConstraint, int heightConstraint );
+    Size GetDesiredSize( int widthConstraint, int heightConstraint );
 
     /// <summary>
     /// Draws the element.

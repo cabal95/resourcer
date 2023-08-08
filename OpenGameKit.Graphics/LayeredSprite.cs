@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 
+using OpenGameKit.Abstractions;
+
 namespace OpenGameKit.Graphics;
 
 /// <summary>

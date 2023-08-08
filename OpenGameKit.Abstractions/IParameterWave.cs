@@ -1,4 +1,4 @@
-﻿namespace OpenGameKit.Generators.Abstractions;
+﻿namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// Used by generators to provide multiple characteristics to the

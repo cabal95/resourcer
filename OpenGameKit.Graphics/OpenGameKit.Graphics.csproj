@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OpenGameKit.Abstractions\OpenGameKit.Abstractions.csproj" />
     <ProjectReference Include="..\OpenGameKit\OpenGameKit.csproj" />
   </ItemGroup>
 

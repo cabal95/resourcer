@@ -1,5 +1,5 @@
-﻿using OpenGameKit.Generators;
-using OpenGameKit.Generators.Abstractions;
+﻿using OpenGameKit.Abstractions;
+using OpenGameKit.Generators;
 
 namespace Resourcer.Server.Generators;
 

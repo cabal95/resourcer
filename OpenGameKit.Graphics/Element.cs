@@ -1,4 +1,6 @@
-using SkiaSharp;
+using System.Drawing;
+
+using OpenGameKit.Abstractions;
 
 namespace OpenGameKit.Graphics;
 
@@ -8,12 +10,12 @@ namespace OpenGameKit.Graphics;
 public abstract class Element : IElement
 {
     /// <inheritdoc/>
-    public SKRectI Frame { get; set; }
+    public Rectangle Frame { get; set; }
 
     /// <inheritdoc/>
-    public SKSizeI GetDesiredSize( int widthConstraint, int heightConstraint )
+    public Size GetDesiredSize( int widthConstraint, int heightConstraint )
     {
-        return new SKSizeI( widthConstraint, heightConstraint );
+        return new Size( widthConstraint, heightConstraint );
     }
 
     /// <inheritdoc/>

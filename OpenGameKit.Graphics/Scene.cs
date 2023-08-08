@@ -1,10 +1,10 @@
 using System.Collections.ObjectModel;
+using System.Drawing;
 
-using Microsoft.Extensions.DependencyInjection;
-
-using SkiaSharp;
+using OpenGameKit.Abstractions;
 
 namespace OpenGameKit.Graphics;
+
 /// <summary>
 /// A scene that contains child scenes.
 /// </summary>
@@ -18,10 +18,10 @@ public class Scene : IScene
     /// <summary>
     /// The current frame for this scene.
     /// </summary>
-    private SKRectI _frame = SKRectI.Empty;
+    private Rectangle _frame = Rectangle.Empty;
 
     /// <inheritdoc/>
-    public SKRectI Frame
+    public Rectangle Frame
     {
         get => _frame;
         set
@@ -78,9 +78,9 @@ public class Scene : IScene
     }
 
     /// <inheritdoc/>
-    public SKSizeI GetDesiredSize( int widthConstraint, int heightConstraint )
+    public Size GetDesiredSize( int widthConstraint, int heightConstraint )
     {
-        return new SKSizeI( widthConstraint, heightConstraint );
+        return new Size( widthConstraint, heightConstraint );
     }
 
     /// <inheritdoc/>

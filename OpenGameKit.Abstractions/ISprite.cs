@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace OpenGameKit.Graphics;
+namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// An object that can be drawn onto a canvas.

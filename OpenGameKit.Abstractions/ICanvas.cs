@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace OpenGameKit.Graphics;
+namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// A canvas is a drawing surface that supports various operations for renering

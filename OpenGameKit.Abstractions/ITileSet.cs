@@ -1,4 +1,4 @@
-﻿namespace OpenGameKit.Graphics;
+﻿namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// A set of tiles that are contained in a single image.

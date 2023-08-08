@@ -1,4 +1,4 @@
-namespace OpenGameKit.Graphics;
+namespace OpenGameKit.Abstractions;
 
 /// <summary>
 /// Provides a way for UI elements to access information about the current
