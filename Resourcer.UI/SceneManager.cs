@@ -17,12 +17,15 @@ public class SceneManager
 
     private readonly IServiceProvider _serviceProvider;
 
+    private readonly IAnimationTimer _animationTimer;
+
     private readonly Timer _timer;
 
-    public SceneManager( IServiceProvider serviceProvider, IPlatform platform )
+    public SceneManager( IServiceProvider serviceProvider, IPlatform platform, IAnimationTimer animationTimer )
     {
         _serviceProvider = serviceProvider;
         _platform = platform;
+        _animationTimer = animationTimer;
 
         _currentScene = ActivatorUtilities.GetServiceOrCreateInstance<GameScene>( _serviceProvider );
 
@@ -39,6 +42,8 @@ public class SceneManager
             _currentScene.Frame = new Rectangle( _currentScene.Frame.Location, new Size( size.Width, size.Height ) );
         }
 
+        _animationTimer.StartFrame();
+
         canvas.Save();
         canvas.ClipRect( new SKRect( _currentScene.Frame.Left, _currentScene.Frame.Top, _currentScene.Frame.Right, _currentScene.Frame.Bottom ) );
         _currentScene.Draw( new DrawOperation( new SkiaSharpCanvas( canvas ), _serviceProvider ) );
@@ -50,7 +55,6 @@ public class SceneManager
         if ( _currentScene is GameScene gameScene )
         {
             gameScene.Offset = new SKPointI( gameScene.Offset.X - amount.X, gameScene.Offset.Y - amount.Y );
-            // _platform.UpdateCanvas();
         }
     }
 }

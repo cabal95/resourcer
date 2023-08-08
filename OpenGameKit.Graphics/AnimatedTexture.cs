@@ -13,9 +13,9 @@ namespace OpenGameKit.Graphics;
 public class AnimatedTexture : ITexture
 {
     /// <summary>
-    /// The frame counter used to control our animation.
+    /// The timer used to control our animation.
     /// </summary>
-    private IFrameCounter? _frameCounter;
+    private IAnimationTimer? _animationTimer;
 
     /// <summary>
     /// The textures that make up the animation sequence.
@@ -45,9 +45,9 @@ public class AnimatedTexture : ITexture
     /// <inheritdoc/>
     public void Draw( IDrawOperation operation, Rectangle destination )
     {
-        _frameCounter ??= operation.GetRequiredService<IFrameCounter>();
+        _animationTimer ??= operation.GetRequiredService<IAnimationTimer>();
 
-        var index = ( _frameCounter.Frame / 15 ) % _textures.Length;
+        var index = _animationTimer.GetLinearFrame( 0.5, _textures.Length );
 
         _textures[index].Draw( operation, destination );
     }

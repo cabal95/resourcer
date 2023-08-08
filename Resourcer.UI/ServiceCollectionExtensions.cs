@@ -19,6 +19,6 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.UseSkiaSharpRendering();
         serviceCollection.AddSingleton<SpriteProvider>();
-        serviceCollection.AddSingleton<IFrameCounter, FrameCounter>();
+        serviceCollection.AddSingleton<IAnimationTimer, AnimationTimer>();
     }
 }

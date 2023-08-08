@@ -90,12 +90,7 @@ public class Scene : IScene
 
         foreach ( var child in Children )
         {
-            //canvas.Save();
-            //canvas.ClipRect( child.Frame );
-
             child.Draw( operation );
-
-            //canvas.Restore();
         }
     }
 }

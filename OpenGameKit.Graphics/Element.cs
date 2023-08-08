@@ -13,7 +13,7 @@ public abstract class Element : IElement
     public Rectangle Frame { get; set; }
 
     /// <inheritdoc/>
-    public Size GetDesiredSize( int widthConstraint, int heightConstraint )
+    public virtual Size GetDesiredSize( int widthConstraint, int heightConstraint )
     {
         return new Size( widthConstraint, heightConstraint );
     }
