@@ -1,4 +1,6 @@
-﻿using OpenGameKit.Graphics;
+﻿using System.Drawing;
+
+using OpenGameKit.Graphics;
 
 using Resourcer.UI;
 
@@ -65,7 +67,7 @@ public class GameScene : Scene
             var x = left + ( ( characterPosX - mapLeft ) * 64 );
             var y = top + ( ( characterPosY - mapTop ) * 64 );
 
-            var destination = new SKRect( x + 8, y + 8, x + 48, y + 48 );
+            var destination = new Rectangle( x + 8, y + 8, 48, 48 );
 
             _sprites.CharacterTile.Draw( operation, destination );
         }

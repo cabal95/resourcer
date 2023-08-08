@@ -6,4 +6,5 @@ namespace OpenGameKit.Graphics;
 /// </summary>
 public interface IDrawOperation : IServiceProvider
 {
+    public ICanvas Canvas { get; }
 }

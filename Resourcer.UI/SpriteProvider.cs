@@ -63,45 +63,45 @@ public class SpriteProvider
                 throw new Exception( "World tile set not found." );
             }
 
-            var overworld = new GridTileSet( stream, 16, 16 );
+            var overworld = new GridTileSet( new PlatformTileSet( stream ), 16, 16 );
 
             GrassTiles = new[]
             {
-                overworld.GetTileAt( 0, 0 ),
-                overworld.GetTileAt( 7, 9 ),
-                overworld.GetTileAt( 8, 9 ),
-                overworld.GetTileAt( 7, 10 ),
-                overworld.GetTileAt( 8, 10 )
+                overworld.GetSpriteAt( 0, 0 ),
+                overworld.GetSpriteAt( 7, 9 ),
+                overworld.GetSpriteAt( 8, 9 ),
+                overworld.GetSpriteAt( 7, 10 ),
+                overworld.GetSpriteAt( 8, 10 )
             };
 
             WaterTiles = new[]
             {
-                overworld.GetTileAt( 0, 1 ),
-                overworld.GetTileAt( 1, 1 ),
-                overworld.GetTileAt( 2, 1 ),
-                overworld.GetTileAt( 3, 1 ),
-                overworld.GetTileAt( 0, 2 ),
-                overworld.GetTileAt( 1, 2 ),
-                overworld.GetTileAt( 2, 2 ),
-                overworld.GetTileAt( 3, 2 )
+                overworld.GetSpriteAt( 0, 1 ),
+                overworld.GetSpriteAt( 1, 1 ),
+                overworld.GetSpriteAt( 2, 1 ),
+                overworld.GetSpriteAt( 3, 1 ),
+                overworld.GetSpriteAt( 0, 2 ),
+                overworld.GetSpriteAt( 1, 2 ),
+                overworld.GetSpriteAt( 2, 2 ),
+                overworld.GetSpriteAt( 3, 2 )
             };
 
             TundraTiles = new[]
             {
-                overworld.GetTileAt( 14, 11 ),
-                overworld.GetTileAt( 14, 12 )
+                overworld.GetSpriteAt( 14, 11 ),
+                overworld.GetSpriteAt( 14, 12 )
             };
 
             MountainTiles = new[]
             {
-                new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 7, 5 ) )
+                new LayeredSprite( overworld.GetSpriteAt( 0, 0 ), overworld.GetSpriteAt( 7, 5 ) )
             };
 
-            DesertTiles = new[] { overworld.GetTileAt( 2, 32 ) };
+            DesertTiles = new[] { overworld.GetSpriteAt( 2, 32 ) };
 
             ForestTiles = new[]
             {
-                new LayeredSprite( overworld.GetTileAt( 0, 0 ), overworld.GetTileAt( 2, 14 ) )
+                new LayeredSprite( overworld.GetSpriteAt( 0, 0 ), overworld.GetSpriteAt( 2, 14 ) )
             };
         }
 
@@ -112,13 +112,13 @@ public class SpriteProvider
                 throw new Exception( "Character tile set not found." );
             }
 
-            var character = new UnstructuredTileSet( stream );
+            var character = new PlatformTileSet( stream );
 
             CharacterTile = new AnimatedSprite(
-                character.GetTileAt( 0, 1, 16, 16 ),
-                character.GetTileAt( 0, 18, 16, 16 ),
-                character.GetTileAt( 0, 1, 16, 16 ),
-                character.GetTileAt( 0, 35, 16, 16 ) );
+                character.GetSpriteAt( 0, 1, 16, 16 ),
+                character.GetSpriteAt( 0, 18, 16, 16 ),
+                character.GetSpriteAt( 0, 1, 16, 16 ),
+                character.GetSpriteAt( 0, 35, 16, 16 ) );
         }
 
         var serviceCollection = new ServiceCollection();

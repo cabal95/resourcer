@@ -1,4 +1,4 @@
-﻿using SkiaSharp;
+﻿using System.Drawing;
 
 namespace OpenGameKit.Graphics;
 
@@ -34,7 +34,7 @@ public class LayeredSprite : ISprite
     }
 
     /// <inheritdoc/>
-    public void Draw( IDrawOperation operation, SKRect destination )
+    public void Draw( IDrawOperation operation, Rectangle destination )
     {
         for ( int i = 0; i < _sprites.Length; i++ )
         {

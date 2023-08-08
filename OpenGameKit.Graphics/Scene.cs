@@ -88,16 +88,14 @@ public class Scene : IScene
     {
         UpdateLayoutIfRequested();
 
-        var canvas = operation.GetRequiredService<SKCanvas>();
-
         foreach ( var child in Children )
         {
-            canvas.Save();
-            canvas.ClipRect( child.Frame );
+            //canvas.Save();
+            //canvas.ClipRect( child.Frame );
 
             child.Draw( operation );
 
-            canvas.Restore();
+            //canvas.Restore();
         }
     }
 }

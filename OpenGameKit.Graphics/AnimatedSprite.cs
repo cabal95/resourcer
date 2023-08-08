@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Drawing;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using OpenGameKit.Abstractions;
-
-using SkiaSharp;
 
 namespace OpenGameKit.Graphics;
 
@@ -43,7 +43,7 @@ public class AnimatedSprite : ISprite
     }
 
     /// <inheritdoc/>
-    public void Draw( IDrawOperation operation, SKRect destination )
+    public void Draw( IDrawOperation operation, Rectangle destination )
     {
         _frameCounter ??= operation.GetRequiredService<IFrameCounter>();
 

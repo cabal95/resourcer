@@ -1,6 +1,4 @@
-﻿using SkiaSharp;
-
-namespace OpenGameKit.Graphics;
+﻿namespace OpenGameKit.Graphics;
 
 /// <summary>
 /// A set of tiles that are contained in a single image.
@@ -8,11 +6,12 @@ namespace OpenGameKit.Graphics;
 public interface ITileSet
 {
     /// <summary>
-    /// Draws a single tile from the set onto the canvas inside the
-    /// destination rectangle.
+    /// Gets the sprite at the specified pixel position.
     /// </summary>
-    /// <param name="tile">The tile to be drawn from this set.</param>
-    /// <param name="canvas">The canvas surface the tile will be painted on.</param>
-    /// <param name="destination">The rectangle on the surface that should be filled with the tile.</param>
-    void DrawTile( ITile tile, SKCanvas canvas, SKRect destination );
+    /// <param name="x">The zero based index of the tile from the left edge of the image.</param>
+    /// <param name="y">The zero based index of the tile from the top edge of the image.</param>
+    /// <param name="width">The width of the tile.</param>
+    /// <param name="height">The height of the tile.</param>
+    /// <returns>A reference to the tile.</returns>
+    ISprite GetSpriteAt( int x, int y, int width, int height );
 }

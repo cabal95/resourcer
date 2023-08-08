@@ -1,3 +1,5 @@
+using System.Drawing;
+
 using OpenGameKit.Graphics;
 
 using Resourcer.UI;
@@ -63,7 +65,7 @@ public class MapScene : Element
             {
                 if ( mapX >= 0 && mapX < 256 && mapY >= 0 && mapY < 256 )
                 {
-                    var destination = new SKRect( x, y, x + 64, y + 64 );
+                    var destination = new Rectangle( x, y, 64, 64 );
 
                     var biome = _sprites.Map[mapX, mapY];
 

@@ -1,4 +1,4 @@
-﻿using SkiaSharp;
+﻿using System.Drawing;
 
 namespace OpenGameKit.Graphics;
 
@@ -22,5 +22,5 @@ public interface ISprite
     /// </summary>
     /// <param name="operation">The current drawing operation.</param>
     /// <param name="destination">The rectangle on the surface that should be filled with this instance.</param>
-    void Draw( IDrawOperation operation, SKRect destination );
+    void Draw( IDrawOperation operation, Rectangle destination );
 }

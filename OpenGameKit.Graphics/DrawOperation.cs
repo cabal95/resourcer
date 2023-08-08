@@ -8,9 +8,9 @@ namespace OpenGameKit.Graphics;
 public class DrawOperation : IDrawOperation
 {
     /// <summary>
-    /// The canvas object that will be returned in GetService().
+    /// The canvas object that drawing operations should be performed on.
     /// </summary>
-    private readonly SKCanvas _canvas;
+    public ICanvas Canvas { get; }
 
     /// <summary>
     /// The service provider that will be used in GetService().
@@ -22,20 +22,15 @@ public class DrawOperation : IDrawOperation
     /// </summary>
     /// <param name="canvas">The canvas the operation will draw to.</param>
     /// <param name="engineServices">The services available to the operation.</param>
-    public DrawOperation( SKCanvas canvas, IServiceProvider engineServices )
+    public DrawOperation( ICanvas canvas, IServiceProvider engineServices )
     {
-        _canvas = canvas;
+        Canvas = canvas;
         _serviceProvider = engineServices;
     }
 
     /// <inheritdoc/>
     public object? GetService( Type serviceType )
     {
-        if ( serviceType == typeof( SKCanvas ) )
-        {
-            return _canvas;
-        }
-
         return _serviceProvider.GetService( serviceType );
     }
 }
