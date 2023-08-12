@@ -73,6 +73,57 @@ public class GameScene : Scene
             _sprites.CharacterTile.Draw( operation, destination );
         }
 
+        var copperPosX = 13;
+        var copperPosY = 12;
+
+        if ( copperPosX >= mapLeft && copperPosX <= mapRight && copperPosY >= mapTop && copperPosY <= mapBottom )
+        {
+            // Determine the starting painting position.
+            int left = Frame.Left + drawingOffsetX;
+            int top = Frame.Top + drawingOffsetY;
+
+            var x = left + ( ( copperPosX - mapLeft ) * 64 );
+            var y = top + ( ( copperPosY - mapTop ) * 64 );
+
+            var destination = new Rectangle( x, y, 64, 64 );
+
+            _sprites.CopperResource.Draw( operation, destination );
+        }
+
+        var cobaltPosX = 13;
+        var cobaltPosY = 13;
+
+        if ( cobaltPosX >= mapLeft && cobaltPosX <= mapRight && cobaltPosY >= mapTop && cobaltPosY <= mapBottom )
+        {
+            // Determine the starting painting position.
+            int left = Frame.Left + drawingOffsetX;
+            int top = Frame.Top + drawingOffsetY;
+
+            var x = left + ( ( cobaltPosX - mapLeft ) * 64 );
+            var y = top + ( ( cobaltPosY - mapTop ) * 64 );
+
+            var destination = new Rectangle( x, y, 64, 64 );
+
+            _sprites.CobaltResource.Draw( operation, destination );
+        }
+
+        var miningPosX = 13;
+        var miningPosY = 12;
+
+        if ( miningPosX >= mapLeft && miningPosX <= mapRight && miningPosY >= mapTop && miningPosY <= mapBottom )
+        {
+            // Determine the starting painting position.
+            int left = Frame.Left + drawingOffsetX;
+            int top = Frame.Top + drawingOffsetY;
+
+            var x = left + ( ( miningPosX - mapLeft ) * 64 );
+            var y = top + ( ( miningPosY - mapTop ) * 64 );
+
+            var destination = new Rectangle( x, y, 128, 128 );
+
+            _sprites.MiningFacility.Draw( operation, destination );
+        }
+
         _frames++;
 
         if ( operation.GetService( typeof( SKCanvas ) ) is SKCanvas canvas )
