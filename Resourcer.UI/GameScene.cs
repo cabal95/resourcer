@@ -42,10 +42,8 @@ public class GameScene : Scene
     }
 
     /// <inheritdoc/>
-    public override void Draw( IDrawOperation operation )
+    protected override void DrawContent( IDrawOperation operation )
     {
-        base.Draw( operation );
-
         // Determine the X,Y map coordinates we will start painting from.
         var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
         var mapTop = ( int ) Math.Floor( Offset.Y / 64.0 );
@@ -53,75 +51,20 @@ public class GameScene : Scene
         var mapBottom = ( int ) Math.Floor( ( Offset.Y + Frame.Height ) / 64.0 );
 
         // Determine the drawing offsets.
-        var drawingOffsetX = ( mapLeft * 64 ) - Offset.X;
-        var drawingOffsetY = ( mapTop * 64 ) - Offset.Y;
+        var left = ( mapLeft * 64 ) - Offset.X;
+        var top = ( mapTop * 64 ) - Offset.Y;
 
         var characterPosX = 12;
         var characterPosY = 12;
 
         if ( characterPosX >= mapLeft && characterPosX <= mapRight && characterPosY >= mapTop && characterPosY <= mapBottom )
         {
-            // Determine the starting painting position.
-            int left = Frame.Left + drawingOffsetX;
-            int top = Frame.Top + drawingOffsetY;
-
             var x = left + ( ( characterPosX - mapLeft ) * 64 );
             var y = top + ( ( characterPosY - mapTop ) * 64 );
 
             var destination = new Rectangle( x + 8, y + 8, 48, 48 );
 
             _sprites.CharacterTile.Draw( operation, destination );
-        }
-
-        var copperPosX = 13;
-        var copperPosY = 12;
-
-        if ( copperPosX >= mapLeft && copperPosX <= mapRight && copperPosY >= mapTop && copperPosY <= mapBottom )
-        {
-            // Determine the starting painting position.
-            int left = Frame.Left + drawingOffsetX;
-            int top = Frame.Top + drawingOffsetY;
-
-            var x = left + ( ( copperPosX - mapLeft ) * 64 );
-            var y = top + ( ( copperPosY - mapTop ) * 64 );
-
-            var destination = new Rectangle( x, y, 64, 64 );
-
-            _sprites.CopperResource.Draw( operation, destination );
-        }
-
-        var cobaltPosX = 13;
-        var cobaltPosY = 13;
-
-        if ( cobaltPosX >= mapLeft && cobaltPosX <= mapRight && cobaltPosY >= mapTop && cobaltPosY <= mapBottom )
-        {
-            // Determine the starting painting position.
-            int left = Frame.Left + drawingOffsetX;
-            int top = Frame.Top + drawingOffsetY;
-
-            var x = left + ( ( cobaltPosX - mapLeft ) * 64 );
-            var y = top + ( ( cobaltPosY - mapTop ) * 64 );
-
-            var destination = new Rectangle( x, y, 64, 64 );
-
-            _sprites.CobaltResource.Draw( operation, destination );
-        }
-
-        var miningPosX = 13;
-        var miningPosY = 12;
-
-        if ( miningPosX >= mapLeft && miningPosX <= mapRight && miningPosY >= mapTop && miningPosY <= mapBottom )
-        {
-            // Determine the starting painting position.
-            int left = Frame.Left + drawingOffsetX;
-            int top = Frame.Top + drawingOffsetY;
-
-            var x = left + ( ( miningPosX - mapLeft ) * 64 );
-            var y = top + ( ( miningPosY - mapTop ) * 64 );
-
-            var destination = new Rectangle( x, y, 128, 128 );
-
-            _sprites.MiningFacility.Draw( operation, destination );
         }
 
         _frames++;

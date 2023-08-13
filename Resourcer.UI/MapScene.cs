@@ -53,12 +53,8 @@ public class MapScene : Element
         var mapBottom = ( int ) Math.Floor( ( Offset.Y + Frame.Height ) / 64.0 );
 
         // Determine the drawing offsets.
-        var drawingOffsetX = ( mapLeft * 64 ) - Offset.X;
-        var drawingOffsetY = ( mapTop * 64 ) - Offset.Y;
-
-        // Determine the starting painting position.
-        int left = Frame.Left + drawingOffsetX;
-        int top = Frame.Top + drawingOffsetY;
+        var left = ( mapLeft * 64 ) - Offset.X;
+        var top = ( mapTop * 64 ) - Offset.Y;
 
         for ( int y = top, mapY = mapTop; mapY <= mapBottom; y += 64, mapY++ )
         {

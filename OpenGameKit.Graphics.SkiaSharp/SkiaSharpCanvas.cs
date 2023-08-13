@@ -18,12 +18,70 @@ public class SkiaSharpCanvas : ICanvas
     private readonly SKCanvas _canvas;
 
     /// <summary>
+    /// The stack of state objects.
+    /// </summary>
+    private readonly Stack<CanvasState> _states = new( 10 );
+
+    /// <summary>
+    /// The current state object.
+    /// </summary>
+    private CanvasState CurrentState => _states.Peek();
+
+    /// <summary>
     /// Creates a new instance of <see cref="SkiaSharpCanvas"/>.
     /// </summary>
     /// <param name="canvas">The native SkiaSharp canvas.</param>
     public SkiaSharpCanvas( SKCanvas canvas )
     {
         _canvas = canvas;
+        _states.Push( new CanvasState( null, PopState ) );
+    }
+
+    /// <inheritdoc/>
+    public IDisposable SaveState()
+    {
+        var state = new CanvasState( CurrentState, PopState );
+
+        _canvas.Save();
+        _states.Push( state );
+
+        return state;
+    }
+
+    /// <inheritdoc/>
+    private void PopState()
+    {
+        if ( _states.Count <= 1 )
+        {
+            throw new InvalidOperationException( "Attempted to pop state when no state was saved." );
+        }
+
+        _canvas.Restore();
+        _states.Pop();
+    }
+
+    /// <inheritdoc/>
+    public void SetAlpha( float alpha )
+    {
+        CurrentState.Alpha = alpha;
+    }
+
+    /// <inheritdoc/>
+    public void Scale( float scale )
+    {
+        _canvas.Scale( scale );
+    }
+
+    /// <inheritdoc/>
+    public void Translate( float x, float y )
+    {
+        _canvas.Translate( x, y );
+    }
+
+    /// <inheritdoc/>
+    public void ClipRect( RectangleF bounds )
+    {
+        _canvas.ClipRect( new SKRect( bounds.Left, bounds.Top, bounds.Right, bounds.Bottom ) );
     }
 
     /// <inheritdoc/>
@@ -36,6 +94,11 @@ public class SkiaSharpCanvas : ICanvas
 
         var skiaDestination = new SKRect( destination.Left, destination.Top, destination.Right, destination.Bottom );
 
-        _canvas.DrawBitmap( platformTexture.Bitmap, platformTexture.SourceRect, skiaDestination );
+        using var paint = new SKPaint
+        {
+            ColorF = new SKColorF( 1, 1, 1, CurrentState.Alpha )
+        };
+
+        _canvas.DrawBitmap( platformTexture.Bitmap, platformTexture.SourceRect, skiaDestination, paint );
     }
 }

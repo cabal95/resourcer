@@ -46,6 +46,7 @@ public class SceneManager
 
         canvas.Save();
         canvas.ClipRect( new SKRect( _currentScene.Frame.Left, _currentScene.Frame.Top, _currentScene.Frame.Right, _currentScene.Frame.Bottom ) );
+        canvas.Clear();
         _currentScene.Draw( new DrawOperation( new SkiaSharpCanvas( canvas ), _serviceProvider ) );
         canvas.Restore();
     }

@@ -88,9 +88,33 @@ public class Scene : IScene
     {
         UpdateLayoutIfRequested();
 
+        DrawChildren( operation );
+        DrawContent( operation );
+    }
+
+    /// <summary>
+    /// Draws all the children elements of this scene.
+    /// </summary>
+    /// <param name="operation">The current drawing operation.</param>
+    protected virtual void DrawChildren( IDrawOperation operation )
+    {
         foreach ( var child in Children )
         {
+            using var state = operation.Canvas.SaveState();
+
+            operation.Canvas.ClipRect( child.Frame );
+            operation.Canvas.Translate( child.Frame.X, child.Frame.Y );
+
             child.Draw( operation );
         }
+    }
+
+    /// <summary>
+    /// Draws all the scene inner content. This is called after the children
+    /// have been drawn.
+    /// </summary>
+    /// <param name="operation">The current drawing operation.</param>
+    protected virtual void DrawContent( IDrawOperation operation )
+    {
     }
 }
