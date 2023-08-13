@@ -30,18 +30,9 @@ internal class CanvasState : IDisposable
         }
     }
 
-    /// <summary>
-    /// Called when the instance has been destroyed by the garbage collector.
-    /// </summary>
-    ~CanvasState()
-    {
-        _disposeAction.Invoke();
-    }
-
     /// <inheritdoc/>
     public void Dispose()
     {
-        GC.SuppressFinalize( this );
         _disposeAction.Invoke();
     }
 

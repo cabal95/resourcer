@@ -47,7 +47,7 @@ public class AnimatedTexture : ITexture
     {
         _animationTimer ??= operation.GetRequiredService<IAnimationTimer>();
 
-        var index = _animationTimer.GetLinearFrame( 0.5, _textures.Length );
+        var index = _animationTimer.GetLinearFrame( 0.75, _textures.Length );
 
         _textures[index].Draw( operation, destination );
     }
