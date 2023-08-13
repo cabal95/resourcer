@@ -51,11 +51,11 @@ public class SceneManager
         canvas.Restore();
     }
 
-    public void Pan( SKPointI amount )
+    public void Pan( Point amount )
     {
         if ( _currentScene is GameScene gameScene )
         {
-            gameScene.Offset = new SKPointI( gameScene.Offset.X - amount.X, gameScene.Offset.Y - amount.Y );
+            gameScene.Offset = new Point( gameScene.Offset.X - amount.X, gameScene.Offset.Y - amount.Y );
         }
     }
 }

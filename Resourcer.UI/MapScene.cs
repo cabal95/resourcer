@@ -5,8 +5,6 @@ using OpenGameKit.Graphics;
 
 using Resourcer.UI;
 
-using SkiaSharp;
-
 namespace Resourcer;
 
 /// <summary>
@@ -29,7 +27,7 @@ public class MapScene : Element
     /// A representation of the raw pixel position of the top left corner of
     /// the map in the world.
     /// </summary>
-    public SKPointI Offset { get; set; } = SKPointI.Empty;
+    public Point Offset { get; set; } = Point.Empty;
 
     #endregion
 

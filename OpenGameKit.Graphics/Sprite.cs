@@ -33,6 +33,6 @@ public class Sprite : Element
     /// <inheritdoc/>
     public override void Draw( IDrawOperation operation )
     {
-        operation.Canvas.DrawTexture( _texture, new Rectangle( 0, 0, Frame.Width, Frame.Height ) );
+        _texture.Draw( operation, new Rectangle( 0, 0, Frame.Width, Frame.Height ) );
     }
 }

@@ -11,12 +11,20 @@ namespace Resourcer;
 
 public class GameScene : Scene
 {
-    private readonly MapScene _mapScene;
+    private Point _offset;
 
-    public SKPointI Offset
+    private readonly MapScene _mapScene;
+    private readonly CharacterScene _characterScene;
+
+    public Point Offset
     {
-        get => _mapScene.Offset;
-        set => _mapScene.Offset = value;
+        get => _offset;
+        set
+        {
+            _offset = value;
+            _mapScene.Offset = value;
+            _characterScene.Offset = value;
+        }
     }
 
     private readonly SpriteProvider _sprites;
@@ -30,43 +38,22 @@ public class GameScene : Scene
     public GameScene( SpriteProvider sprites )
     {
         _mapScene = new MapScene( sprites );
+        _characterScene = new CharacterScene( sprites );
         _sprites = sprites;
 
         Children.Add( _mapScene );
+        Children.Add( _characterScene );
     }
 
     /// <inheritdoc/>
     protected override void Layout()
     {
-        _mapScene.Frame = new Rectangle( 0, 0, Frame.Width, Frame.Height );
+        _characterScene.Frame = _mapScene.Frame = new Rectangle( 0, 0, Frame.Width, Frame.Height );
     }
 
     /// <inheritdoc/>
     protected override void DrawContent( IDrawOperation operation )
     {
-        // Determine the X,Y map coordinates we will start painting from.
-        var mapLeft = ( int ) Math.Floor( Offset.X / 64.0 );
-        var mapTop = ( int ) Math.Floor( Offset.Y / 64.0 );
-        var mapRight = ( int ) Math.Floor( ( Offset.X + Frame.Width ) / 64.0 );
-        var mapBottom = ( int ) Math.Floor( ( Offset.Y + Frame.Height ) / 64.0 );
-
-        // Determine the drawing offsets.
-        var left = ( mapLeft * 64 ) - Offset.X;
-        var top = ( mapTop * 64 ) - Offset.Y;
-
-        var characterPosX = 12;
-        var characterPosY = 12;
-
-        if ( characterPosX >= mapLeft && characterPosX <= mapRight && characterPosY >= mapTop && characterPosY <= mapBottom )
-        {
-            var x = left + ( ( characterPosX - mapLeft ) * 64 );
-            var y = top + ( ( characterPosY - mapTop ) * 64 );
-
-            var destination = new Rectangle( x + 8, y + 8, 48, 48 );
-
-            _sprites.CharacterTile.Draw( operation, destination );
-        }
-
         _frames++;
 
         if ( operation.GetService( typeof( SKCanvas ) ) is SKCanvas canvas )

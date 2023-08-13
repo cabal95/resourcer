@@ -54,7 +54,7 @@ public partial class MainWindow : Window
             var offsetY = position.Y - _lastDragPosition.Value.Y;
 
             _lastDragPosition = position;
-            _sceneManager.Pan( new SKPointI( offsetX, offsetY ) );
+            _sceneManager.Pan( new System.Drawing.Point( offsetX, offsetY ) );
         }
     }
 
