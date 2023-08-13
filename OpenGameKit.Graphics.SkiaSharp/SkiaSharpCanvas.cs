@@ -85,6 +85,19 @@ public class SkiaSharpCanvas : ICanvas
     }
 
     /// <inheritdoc/>
+    public void DrawRect( Rectangle rect, PaintOperation paint )
+    {
+        using var skiaPaint = new SKPaint();
+
+        if ( paint.Fill.HasValue )
+        {
+            skiaPaint.ColorF = new SKColorF( paint.Fill.Value.R / 255.0f, paint.Fill.Value.G / 255.0f, paint.Fill.Value.B / 255.0f, paint.Fill.Value.A / 255.0f * CurrentState.Alpha );
+        };
+
+        _canvas.DrawRect( rect.X, rect.Y, rect.Width, rect.Height, skiaPaint );
+    }
+
+    /// <inheritdoc/>
     public void DrawTexture( ITexture texture, Rectangle destination )
     {
         if ( texture is not PlatformTexture platformTexture )
@@ -100,5 +113,21 @@ public class SkiaSharpCanvas : ICanvas
         };
 
         _canvas.DrawBitmap( platformTexture.Bitmap, platformTexture.SourceRect, skiaDestination, paint );
+    }
+
+    /// <inheritdoc/>
+    public void DrawText( string text, Point location, TextPaintOperation paint )
+    {
+        using var skiaPaint = new SKPaint
+        {
+            TextSize = paint.FontSize
+        };
+
+        if ( paint.Fill.HasValue )
+        {
+            skiaPaint.ColorF = new SKColorF( paint.Fill.Value.R / 255.0f, paint.Fill.Value.G / 255.0f, paint.Fill.Value.B / 255.0f, paint.Fill.Value.A / 255.0f * CurrentState.Alpha );
+        };
+
+        _canvas.DrawText( text, location.X, location.Y + paint.FontSize, skiaPaint );
     }
 }

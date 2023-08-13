@@ -40,10 +40,30 @@ public interface ICanvas
     /// <param name="bounds">The clipping rectangle.</param>
     void ClipRect( RectangleF bounds );
 
+    #region Drawing Methods
+
+    /// <summary>
+    /// Draws a solid rectangle.
+    /// </summary>
+    /// <param name="rect">The rectangle to be drawn.</param>
+    /// <param name="paint">The details on how to pain the rectangle.</param>
+    void DrawRect( Rectangle rect, PaintOperation paint );
+
     /// <summary>
     /// Draw the entire texture into the destination rectangle.
     /// </summary>
     /// <param name="texture">The texture to be drawn.</param>
     /// <param name="destination">The rectangle to draw the texture into.</param>
     void DrawTexture( ITexture texture, Rectangle destination );
+
+    /// <summary>
+    /// Draws a string of text at the specified point using the current canvas
+    /// settings for colors.
+    /// </summary>
+    /// <param name="text">The text to be drawn.</param>
+    /// <param name="location">The top left corner of the text block.</param>
+    /// <param name="paint">The details on how to paint the text.</param>
+    void DrawText( string text, Point location, TextPaintOperation paint );
+
+    #endregion
 }

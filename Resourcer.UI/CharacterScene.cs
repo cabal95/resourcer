@@ -61,7 +61,6 @@ namespace Resourcer.UI
             var y = top + ( ( characterPosY - mapTop ) * 64 );
 
             _character.Frame = new Rectangle( x + 8, y + 8, 48, 48 );
-            System.Diagnostics.Debug.WriteLine( $"Character = {_character.Frame}" );
         }
     }
 }

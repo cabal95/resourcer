@@ -5,8 +5,6 @@ using OpenGameKit.Graphics;
 
 using Resourcer.UI;
 
-using SkiaSharp;
-
 namespace Resourcer;
 
 public class GameScene : Scene
@@ -56,28 +54,24 @@ public class GameScene : Scene
     {
         _frames++;
 
-        if ( operation.GetService( typeof( SKCanvas ) ) is SKCanvas canvas )
+        if ( _fpsStopwatch.ElapsedMilliseconds > 1000 )
         {
-            using var paint = new SKPaint();
-
-            paint.TextSize = 16.0f;
-            paint.IsAntialias = true;
-            paint.IsStroke = false;
-
-            if ( _fpsStopwatch.ElapsedMilliseconds > 1000 )
-            {
-                _fps = ( int ) Math.Round( _frames / _fpsStopwatch.Elapsed.TotalSeconds );
-            }
-
-            var text = $"FPS: {_fps}";
-            var textWidth = paint.MeasureText( text );
-
-            paint.Color = new SKColor( 0, 0, 0, 64 );
-            canvas.DrawRect( SKRect.Create( 10, 10, textWidth, 18 ), paint );
-
-            paint.Color = SKColors.White;
-            canvas.DrawText( text, 10, 10 + 16, paint );
+            _fps = ( int ) Math.Round( _frames / _fpsStopwatch.Elapsed.TotalSeconds );
         }
+
+        var text = $"FPS: {_fps}";
+        var textWidth = 100;
+
+        operation.Canvas.DrawRect( new Rectangle( 10, 10, 10 + textWidth, 20 ), new PaintOperation
+        {
+            Fill = Color.FromArgb( 64, 0, 0, 0 )
+        } );
+
+        operation.Canvas.DrawText( text, new Point( 14, 10 ), new TextPaintOperation
+        {
+            Fill = Color.White,
+            FontSize = 16
+        } );
 
         if ( _fpsStopwatch.ElapsedMilliseconds > 10_000 )
         {
